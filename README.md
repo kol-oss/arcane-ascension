@@ -8,13 +8,13 @@ _17 November 2025_
 
 ## Plugin Information
 
-| Field             | Details                                                                            |
-|-------------------|------------------------------------------------------------------------------------|
-| Platform          | [Minecraft Paper 1.21.10](https://jd.papermc.io/paper/1.21.10/)                    |
-| Genre             | RPG / Magic / Progression                                                          |
-| Target Audience   | Minecraft players seeking enhanced RPG elements                                    |
-| Core Features     | Branch-based magic system, spell progression, village creation, follower mechanics |
-| Reference Systems | Magic plugins, RPG progression systems, custom village mechanics                   |
+| Field                 | Details                                                                            |
+|-----------------------|------------------------------------------------------------------------------------|
+| **Platform**          | [Minecraft Paper 1.21.10](https://jd.papermc.io/paper/1.21.10/)                    |
+| **Genre**             | RPG / Magic / Progression                                                          |
+| **Target Audience**   | Minecraft players seeking enhanced RPG elements                                    |
+| **Core Features**     | Branch-based magic system, spell progression, village creation, follower mechanics |
+| **Reference Systems** | Magic plugins, RPG progression systems, custom village mechanics                   |
 
 ## Gameplay Overview
 
@@ -33,16 +33,16 @@ _17 November 2025_
 
 ## Gameplay Flow
 
-| Step | Action                                                                    |
-|------|---------------------------------------------------------------------------|
-| 1    | Obtain the Tome of Ascension through command                              |
-| 2    | Perform branch-related activities to gain experience                      |
-| 3    | Level up sorcery branches and general arcane level                        |
-| 4    | Unlock and learn new spells through progression and trading               |
-| 5    | Craft star vessels to prepare spells for casting                          |
-| 6    | Use spells to enhance abilities, manipulate world, and manage settlements |
-| 7    | Convert villagers to followers for exclusive spell trading                |
-| 8    | Create and name magical villages as centers of power                      |
+| Step  | Action                                                                    |
+|-------|---------------------------------------------------------------------------|
+| **1** | Obtain the Tome of Ascension through command                              |
+| **2** | Perform branch-related activities to gain experience                      |
+| **3** | Level up sorcery branches and general arcane level                        |
+| **4** | Unlock and learn new spells through progression and trading               |
+| **5** | Craft star vessels to prepare spells for casting                          |
+| **6** | Use spells to enhance abilities, manipulate world, and manage settlements |
+| **7** | Convert villagers to followers for exclusive spell trading                |
+| **8** | Create and name magical villages as centers of power                      |
 
 ## Core Systems
 
@@ -120,26 +120,26 @@ _17 November 2025_
 
 ## Design Style
 
-| Category          | Description                                                                                      |
-|-------------------|--------------------------------------------------------------------------------------------------|
-| Art Style         | Vanilla-friendly mystical enhancements that complement Minecraft's existing aesthetic            |
-| Visual Philosophy | Subtle magical effects that feel like natural extensions of vanilla mechanics                    |
-| User Interface    | Re-skinned chest interfaces with removed unused slots, maintaining vanilla container familiarity |
-| Iconography       | Custom resource pack providing distinct but cohesive spell and vessel icons                      |
-| Death Effects     | Three floating light orbs that gently drift at death location for limited duration               |
-| Color Coding      | Distinct branch colors that harmonize with Minecraft's color palette                             |
-| Animation Style   | Particle-based effects using vanilla's existing effect systems (lightning, fire, smoke)          |
+| Category              | Description                                                                                      |
+|-----------------------|--------------------------------------------------------------------------------------------------|
+| **Art Style**         | Vanilla-friendly mystical enhancements that complement Minecraft's existing aesthetic            |
+| **Visual Philosophy** | Subtle magical effects that feel like natural extensions of vanilla mechanics                    |
+| **User Interface**    | Re-skinned chest interfaces with removed unused slots, maintaining vanilla container familiarity |
+| **Iconography**       | Custom resource pack providing distinct but cohesive spell and vessel icons                      |
+| **Death Effects**     | Three floating light orbs that gently drift at death location for limited duration               |
+| **Color Coding**      | Distinct branch colors that harmonize with Minecraft's color palette                             |
+| **Animation Style**   | Particle-based effects using vanilla's existing effect systems (lightning, fire, smoke)          |
 
 ## Design Guidelines
 
-| Element           | Notes                                                                                |
-|-------------------|--------------------------------------------------------------------------------------|
-| Spell Casting     | Vanilla particle systems combined for unique signatures                              |
-| Elemental Spells  | Lightning for storm magic, flame particles for fire, water droplets for water spells |
-| Buff Effects      | Subtle particle trails matching branch colors during active spell duration           |
-| Mana Display      | Boss bar with custom color and text, positioned naturally in interface space         |
-| Death Orbs        | Three GLOW effect entities with gentle floating animation over 30 seconds            |
-| Vessel Activation | Brief particle burst when spell is activated from star vessel                        |
+| Element               | Notes                                                                                |
+|-----------------------|--------------------------------------------------------------------------------------|
+| **Spell Casting**     | Vanilla particle systems combined for unique signatures                              |
+| **Elemental Spells**  | Lightning for storm magic, flame particles for fire, water droplets for water spells |
+| **Buff Effects**      | Subtle particle trails matching branch colors during active spell duration           |
+| **Mana Display**      | Boss bar with custom color and text, positioned naturally in interface space         |
+| **Death Orbs**        | Three GLOW effect entities with gentle floating animation over 30 seconds            |
+| **Vessel Activation** | Brief particle burst when spell is activated from star vessel                        |
 
 ## Progression Arc
 
