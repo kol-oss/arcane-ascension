@@ -118,6 +118,29 @@ _17 November 2025_
 
 * **Duration Scaling:** Spell effectiveness increases with relevant branch mastery
 
+## Design Style
+
+| Category          | Description                                                                                      |
+|-------------------|--------------------------------------------------------------------------------------------------|
+| Art Style         | Vanilla-friendly mystical enhancements that complement Minecraft's existing aesthetic            |
+| Visual Philosophy | Subtle magical effects that feel like natural extensions of vanilla mechanics                    |
+| User Interface    | Re-skinned chest interfaces with removed unused slots, maintaining vanilla container familiarity |
+| Iconography       | Custom resource pack providing distinct but cohesive spell and vessel icons                      |
+| Death Effects     | Three floating light orbs that gently drift at death location for limited duration               |
+| Color Coding      | Distinct branch colors that harmonize with Minecraft's color palette                             |
+| Animation Style   | Particle-based effects using vanilla's existing effect systems (lightning, fire, smoke)          |
+
+## Design Guidelines
+
+| Element           | Notes                                                                                |
+|-------------------|--------------------------------------------------------------------------------------|
+| Spell Casting     | Vanilla particle systems combined for unique signatures                              |
+| Elemental Spells  | Lightning for storm magic, flame particles for fire, water droplets for water spells |
+| Buff Effects      | Subtle particle trails matching branch colors during active spell duration           |
+| Mana Display      | Boss bar with custom color and text, positioned naturally in interface space         |
+| Death Orbs        | Three GLOW effect entities with gentle floating animation over 30 seconds            |
+| Vessel Activation | Brief particle burst when spell is activated from star vessel                        |
+
 ## Progression Arc
 
 ### Early Game (Levels 1-10)
