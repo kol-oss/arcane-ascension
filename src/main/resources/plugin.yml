@@ -1,4 +1,4 @@
-name: rise-of-cults
+name: arcane-ascension
 version: '1.0-SNAPSHOT'
 main: com.github.koloss.ascension.AscensionPlugin
 api-version: '1.21'
