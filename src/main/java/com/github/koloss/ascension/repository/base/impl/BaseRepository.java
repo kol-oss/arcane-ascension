@@ -4,6 +4,7 @@ import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.mapper.ModelMapper;
 import com.github.koloss.ascension.repository.base.DataRepository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +32,10 @@ public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
         String tableName = getTableName();
         String query = "SELECT * FROM " + tableName + " WHERE id = ?";
 
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+        try (
+                Connection connection = manager.getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+        ) {
             ps.setString(1, id.toString());
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -52,9 +56,11 @@ public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
         String query = "SELECT * FROM " + tableName;
 
         List<T> result = new ArrayList<>();
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
-
+        try (
+                Connection connection = manager.getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+        ) {
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 result.add(mapper.toEntity(rs));
             }
@@ -66,24 +72,32 @@ public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
     }
 
     @Override
-    public void insert(T value) {
+    public T insert(T value) {
         String query = getInsertString();
 
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+        try (
+                Connection connection = manager.getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+        ) {
             mapper.setInsertValues(ps, value);
             ps.executeUpdate();
+            return value;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public void update(K id, T value) {
+    public T update(K id, T value) {
         String query = getUpdateString();
 
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+        try (
+                Connection connection = manager.getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+        ) {
             mapper.setUpdateValues(ps, value);
             ps.executeUpdate();
+            return value;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -94,7 +108,10 @@ public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
         String tableName = getTableName();
         String query = "DELETE FROM " + tableName + " WHERE id = ?";
 
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+        try (
+                Connection connection = manager.getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+        ) {
             ps.setString(1, id.toString());
             ps.executeUpdate();
         } catch (SQLException ex) {

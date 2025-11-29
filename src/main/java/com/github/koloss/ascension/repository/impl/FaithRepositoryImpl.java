@@ -2,11 +2,12 @@ package com.github.koloss.ascension.repository.impl;
 
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.mapper.ModelMapper;
-import com.github.koloss.ascension.model.DivineBranch;
-import com.github.koloss.ascension.model.Reputation;
-import com.github.koloss.ascension.repository.ReputationRepository;
+import com.github.koloss.ascension.model.DivineAspect;
+import com.github.koloss.ascension.model.Faith;
+import com.github.koloss.ascension.repository.FaithRepository;
 import com.github.koloss.ascension.repository.base.impl.BaseRepository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,10 +16,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ReputationRepositoryImpl extends BaseRepository<Reputation, UUID> implements ReputationRepository {
-    private static final String TABLE_NAME = "reputations";
+public class FaithRepositoryImpl extends BaseRepository<Faith, UUID> implements FaithRepository {
+    private static final String TABLE_NAME = "faiths";
 
-    public ReputationRepositoryImpl(DatabaseManager manager, ModelMapper<Reputation> mapper) {
+    public FaithRepositoryImpl(DatabaseManager manager, ModelMapper<Faith> mapper) {
         super(manager, mapper);
     }
 
@@ -29,21 +30,24 @@ public class ReputationRepositoryImpl extends BaseRepository<Reputation, UUID> i
 
     @Override
     protected String getInsertString() {
-        return "INSERT INTO " + TABLE_NAME + " (id, user_id, branch, reputation) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO " + TABLE_NAME + " (id, user_id, aspect, count) VALUES (?, ?, ?, ?)";
     }
 
     @Override
     protected String getUpdateString() {
-        return "UPDATE " + TABLE_NAME + " SET reputation = ? WHERE id = ?";
+        return "UPDATE " + TABLE_NAME + " SET count = ? WHERE id = ?";
     }
 
     @Override
-    public Optional<Reputation> findByUserIdAndBranch(UUID userId, DivineBranch branch) {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE user_id = ? AND branch = ?";
+    public Optional<Faith> findByUserIdAndAspect(UUID userId, DivineAspect aspect) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE user_id = ? AND aspect = ?";
 
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+        try (
+                Connection connection = manager.getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+        ) {
             ps.setString(1, userId.toString());
-            ps.setString(2, branch.toString());
+            ps.setString(2, aspect.toString());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
@@ -58,11 +62,14 @@ public class ReputationRepositoryImpl extends BaseRepository<Reputation, UUID> i
     }
 
     @Override
-    public List<Reputation> findAllByUserId(UUID userId) {
-        List<Reputation> result = new ArrayList<>();
+    public List<Faith> findAllByUserId(UUID userId) {
+        List<Faith> result = new ArrayList<>();
 
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE user_id = ?";
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+        try (
+                Connection connection = manager.getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+        ) {
             ps.setString(1, userId.toString());
 
             try (ResultSet rs = ps.executeQuery()) {
