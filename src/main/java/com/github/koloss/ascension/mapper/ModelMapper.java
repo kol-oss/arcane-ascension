@@ -7,5 +7,7 @@ import java.sql.SQLException;
 public interface ModelMapper<T> {
     T toEntity(ResultSet rs) throws SQLException;
 
-    void setPreparedValues(PreparedStatement ps, T entity) throws SQLException;
+    void setInsertValues(PreparedStatement ps, T entity) throws SQLException;
+
+    void setUpdateValues(PreparedStatement ps, T entity) throws SQLException;
 }
