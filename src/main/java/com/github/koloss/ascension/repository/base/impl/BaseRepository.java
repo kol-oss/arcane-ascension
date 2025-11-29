@@ -1,0 +1,83 @@
+package com.github.koloss.ascension.repository.base.impl;
+
+import com.github.koloss.ascension.database.DatabaseManager;
+import com.github.koloss.ascension.mapper.ModelMapper;
+import com.github.koloss.ascension.repository.base.DataRepository;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
+
+public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
+    protected final DatabaseManager manager;
+    protected final ModelMapper<T> mapper;
+
+    public BaseRepository(DatabaseManager manager, ModelMapper<T> mapper) {
+        this.manager = manager;
+        this.mapper = mapper;
+    }
+
+    protected abstract String getTableName();
+
+    protected abstract String getInsertString();
+
+    protected abstract String getUpdateString();
+
+    @Override
+    public Optional<T> findById(K id) {
+        String tableName = getTableName();
+        String query = "SELECT * FROM " + tableName + " WHERE id = ?";
+
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+            ps.setString(1, id.toString());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    return Optional.empty();
+                }
+
+                return Optional.of(mapper.toEntity(rs));
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void insert(T value) {
+        String query = getInsertString();
+
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+            mapper.setPreparedValues(ps, value);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void update(K id, T value) {
+        String query = getUpdateString();
+
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+            mapper.setPreparedValues(ps, value);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public void deleteById(K id) {
+        String tableName = getTableName();
+        String query = "DELETE FROM " + tableName + " WHERE id = ?";
+
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+            ps.setString(1, id.toString());
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+}
