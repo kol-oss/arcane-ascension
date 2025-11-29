@@ -6,6 +6,7 @@ import com.github.koloss.ascension.model.Spell;
 import com.github.koloss.ascension.repository.SpellRepository;
 import com.github.koloss.ascension.repository.base.impl.BaseRepository;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,7 +41,10 @@ public class SpellRepositoryImpl extends BaseRepository<Spell, UUID> implements 
         List<Spell> result = new ArrayList<>();
 
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE user_id = ?";
-        try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
+        try (
+                Connection connection = manager.getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)
+        ) {
             ps.setString(1, userId.toString());
 
             try (ResultSet rs = ps.executeQuery()) {

@@ -27,7 +27,7 @@ public abstract class DatabaseConfiguration {
         this.password = config.getString(PREFIX + ".password");
 
         this.changelogPath = config.getString(PREFIX + ".changelog.path", "db/changelog.yml");
-        this.maxPoolSize = config.getInt(PREFIX + ".maxPoolSize", 12);
+        this.maxPoolSize = config.getInt(PREFIX + ".maxPoolSize", 64);
         this.connectionTimeout = config.getLong(PREFIX + ".connectionTimeout", 30000L);
     }
 

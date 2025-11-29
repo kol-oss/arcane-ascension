@@ -8,9 +8,9 @@ public interface DataRepository<T, K> {
 
     List<T> findAll();
 
-    void insert(T value);
+    T insert(T value);
 
-    void update(K id, T value);
+    T update(K id, T value);
 
     void deleteById(K id);
 }
