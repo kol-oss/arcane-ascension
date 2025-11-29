@@ -1,0 +1,5 @@
+database:
+  provider: maria
+  name: ascension
+  username: root
+  password: root
