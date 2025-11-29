@@ -84,8 +84,6 @@ public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
         try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
             mapper.setUpdateValues(ps, value);
             ps.executeUpdate();
-
-            System.out.println("executed " + ps);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
