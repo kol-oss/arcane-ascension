@@ -4,7 +4,7 @@ databaseChangeLog:
       author: kol.oss
       changes:
         - createTable:
-            tableName: reputations
+            tableName: faiths
             columns:
               - column:
                   name: id
@@ -18,12 +18,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: branch
+                  name: aspect
                   type: VARCHAR(100)
                   constraints:
                     nullable: false
               - column:
-                  name: reputation
+                  name: count
                   type: BIGINT
                   constraints:
                     nullable: false

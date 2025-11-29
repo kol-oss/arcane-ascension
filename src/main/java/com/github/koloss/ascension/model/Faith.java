@@ -8,12 +8,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Data
 @Builder
-public class Reputation {
+public class Faith {
     private UUID id;
 
     private UUID userId;
 
-    private DivineBranch branch;
+    private DivineAspect aspect;
 
-    private AtomicLong reputation;
+    private AtomicLong count;
 }
