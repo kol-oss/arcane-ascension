@@ -1,0 +1,10 @@
+FROM mariadb:latest
+
+ENV MARIADB_ROOT_PASSWORD=root
+ENV MARIADB_DATABASE=ascension
+ENV MARIADB_USER=maria
+ENV MARIADB_PASSWORD=password
+
+EXPOSE 3306
+
+VOLUME /var/lib/mysql
