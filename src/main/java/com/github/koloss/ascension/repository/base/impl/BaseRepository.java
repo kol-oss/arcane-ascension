@@ -7,6 +7,8 @@ import com.github.koloss.ascension.repository.base.DataRepository;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
@@ -45,11 +47,30 @@ public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
     }
 
     @Override
+    public List<T> findAll() {
+        String tableName = getTableName();
+        String query = "SELECT * FROM " + tableName;
+
+        List<T> result = new ArrayList<>();
+        try (PreparedStatement ps = manager.getConnection().prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                result.add(mapper.toEntity(rs));
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return result;
+    }
+
+    @Override
     public void insert(T value) {
         String query = getInsertString();
 
         try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
-            mapper.setPreparedValues(ps, value);
+            mapper.setInsertValues(ps, value);
             ps.executeUpdate();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -61,8 +82,10 @@ public abstract class BaseRepository<T, K> implements DataRepository<T, K> {
         String query = getUpdateString();
 
         try (PreparedStatement ps = manager.getConnection().prepareStatement(query)) {
-            mapper.setPreparedValues(ps, value);
+            mapper.setUpdateValues(ps, value);
             ps.executeUpdate();
+
+            System.out.println("executed " + ps);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }

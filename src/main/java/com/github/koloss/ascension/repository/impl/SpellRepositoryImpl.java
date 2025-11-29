@@ -32,7 +32,7 @@ public class SpellRepositoryImpl extends BaseRepository<Spell, UUID> implements 
 
     @Override
     protected String getUpdateString() {
-        return "UPDATE " + TABLE_NAME + " SET user_id = ?, type = ?, level = ? WHERE id = ?";
+        return "UPDATE " + TABLE_NAME + " SET level = ? WHERE id = ?";
     }
 
     @Override
