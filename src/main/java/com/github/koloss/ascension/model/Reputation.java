@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Data
 @Builder
@@ -14,5 +15,5 @@ public class Reputation {
 
     private DivineBranch branch;
 
-    private long reputation;
+    private AtomicLong reputation;
 }
