@@ -16,6 +16,9 @@ databaseChangeLog:
                   name: aspect
                   value: "WARDEN"
               - column:
+                  name: level
+                  value: 1
+              - column:
                   name: count
                   value: 5
         - insert:
@@ -31,6 +34,9 @@ databaseChangeLog:
                   name: aspect
                   value: "SMITH"
               - column:
+                  name: level
+                  value: 2
+              - column:
                   name: count
                   value: 10
         - insert:
@@ -45,6 +51,9 @@ databaseChangeLog:
               - column:
                   name: aspect
                   value: "SOWER"
+              - column:
+                  name: level
+                  value: 3
               - column:
                   name: count
                   value: 15

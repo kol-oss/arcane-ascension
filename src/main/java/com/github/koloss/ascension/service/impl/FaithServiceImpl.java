@@ -7,21 +7,26 @@ import com.github.koloss.ascension.model.DivineAspect;
 import com.github.koloss.ascension.model.Faith;
 import com.github.koloss.ascension.repository.FaithRepository;
 import com.github.koloss.ascension.service.FaithService;
+import com.github.koloss.ascension.utils.LevelService;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class FaithServiceImpl implements FaithService {
     private final FaithRepository faithRepository;
-    private final Plugin plugin;
     private final Cache<UUID, Map<DivineAspect, Faith>> cacheByUserId;
 
-    public FaithServiceImpl(FaithRepository faithRepository, Plugin plugin) {
+    private final Plugin plugin;
+    private final LevelService levelService;
+
+    public FaithServiceImpl(FaithRepository faithRepository, Plugin plugin, LevelService levelService) {
         this.faithRepository = faithRepository;
         this.plugin = plugin;
+        this.levelService = levelService;
 
         this.cacheByUserId = Caffeine.newBuilder()
                 .expireAfterAccess(10, TimeUnit.MINUTES)
@@ -79,6 +84,7 @@ public class FaithServiceImpl implements FaithService {
                 .id(UUID.randomUUID())
                 .userId(userId)
                 .aspect(aspect)
+                .level(new AtomicInteger(1))
                 .count(new AtomicLong(0))
                 .build();
 
@@ -89,14 +95,23 @@ public class FaithServiceImpl implements FaithService {
     }
 
     @Override
-    public Faith addByUserIdAndAspect(UUID userId, DivineAspect aspect, long added) {
-        Faith faith = findByUserIdAndAspect(userId, aspect);
-        faith.getCount().addAndGet(added);
+    public Faith update(Faith faith) {
+        UUID userId = faith.getUserId();
 
         refreshCache(userId, faith);
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> faithRepository.update(faith.getId(), faith));
 
         return faith;
+    }
+
+    @Override
+    public boolean hasOpenedNextLevel(UUID userId, DivineAspect aspect) {
+        Faith faith = findByUserIdAndAspect(userId, aspect);
+
+        int currLevel = faith.getLevel().get();
+        int expectedLevel = levelService.getLevel(faith.getCount().get());
+
+        return currLevel < expectedLevel;
     }
 
     @Override

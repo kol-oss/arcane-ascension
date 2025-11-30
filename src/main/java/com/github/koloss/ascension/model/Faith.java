@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Data
@@ -14,6 +15,8 @@ public class Faith {
     private UUID userId;
 
     private DivineAspect aspect;
+
+    private AtomicInteger level;
 
     private AtomicLong count;
 }

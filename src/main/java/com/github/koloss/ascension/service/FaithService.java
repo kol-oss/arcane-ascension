@@ -13,7 +13,9 @@ public interface FaithService {
 
     Faith create(UUID userId, DivineAspect aspect);
 
-    Faith addByUserIdAndAspect(UUID userId, DivineAspect aspect, long added);
+    Faith update(Faith faith);
+
+    boolean hasOpenedNextLevel(UUID userId, DivineAspect aspect);
 
     void save(Faith faith);
 }
