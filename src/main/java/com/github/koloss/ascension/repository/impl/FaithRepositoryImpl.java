@@ -30,12 +30,12 @@ public class FaithRepositoryImpl extends BaseRepository<Faith, UUID> implements 
 
     @Override
     protected String getInsertString() {
-        return "INSERT INTO " + TABLE_NAME + " (id, user_id, aspect, count) VALUES (?, ?, ?, ?)";
+        return "INSERT INTO " + TABLE_NAME + " (id, user_id, aspect, level, count) VALUES (?, ?, ?, ?, ?)";
     }
 
     @Override
     protected String getUpdateString() {
-        return "UPDATE " + TABLE_NAME + " SET count = ? WHERE id = ?";
+        return "UPDATE " + TABLE_NAME + " SET level = ?, count = ? WHERE id = ?";
     }
 
     @Override
