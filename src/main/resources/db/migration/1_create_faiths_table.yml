@@ -23,6 +23,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: level
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
                   name: count
                   type: BIGINT
                   constraints:

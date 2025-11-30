@@ -4,24 +4,22 @@ import com.github.koloss.ascension.config.ConfigurationFactory;
 import com.github.koloss.ascension.config.DatabaseConfiguration;
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.database.impl.DatabaseManagerImpl;
-import com.github.koloss.ascension.listener.ItemListener;
 import com.github.koloss.ascension.listener.FaithListener;
+import com.github.koloss.ascension.listener.ItemListener;
 import com.github.koloss.ascension.mapper.ModelMapper;
 import com.github.koloss.ascension.mapper.impl.FaithMapperImpl;
-import com.github.koloss.ascension.mapper.impl.SpellMapperImpl;
 import com.github.koloss.ascension.model.Faith;
-import com.github.koloss.ascension.model.Spell;
 import com.github.koloss.ascension.repository.FaithRepository;
-import com.github.koloss.ascension.repository.SpellRepository;
 import com.github.koloss.ascension.repository.impl.FaithRepositoryImpl;
-import com.github.koloss.ascension.repository.impl.SpellRepositoryImpl;
 import com.github.koloss.ascension.service.FaithService;
 import com.github.koloss.ascension.service.ItemService;
-import com.github.koloss.ascension.service.SpellService;
 import com.github.koloss.ascension.service.impl.FaithServiceImpl;
 import com.github.koloss.ascension.service.impl.ItemServiceImpl;
+import com.github.koloss.ascension.sidebar.FaithSidebar;
 import com.github.koloss.ascension.utils.InventoryService;
+import com.github.koloss.ascension.utils.LevelService;
 import com.github.koloss.ascension.utils.impl.InventoryServiceImpl;
+import com.github.koloss.ascension.utils.impl.LevelServiceImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
@@ -35,17 +33,14 @@ public final class AscensionPlugin extends JavaPlugin {
 
     private DatabaseManager databaseManager;
 
-    private SpellService spellService;
-    private FaithService faithService;
-
     @Override
     public void onEnable() {
         createDatabaseManager();
-        createServices();
 
         PluginManager manager = Bukkit.getPluginManager();
         manager.registerEvents(createItemListener(), this);
-        manager.registerEvents(new FaithListener(faithService), this);
+
+        createFaithHandlers(manager);
     }
 
     private void createDatabaseManager() {
@@ -63,13 +58,15 @@ public final class AscensionPlugin extends JavaPlugin {
         this.databaseManager = manager;
     }
 
-    private void createServices() {
-        ModelMapper<Spell> spellMapper = new SpellMapperImpl();
-        SpellRepository spellRepository = new SpellRepositoryImpl(databaseManager, spellMapper);
-
+    private void createFaithHandlers(PluginManager manager) {
+        LevelService levelService = new LevelServiceImpl();
         ModelMapper<Faith> faithMapper = new FaithMapperImpl();
+
         FaithRepository faithRepository = new FaithRepositoryImpl(databaseManager, faithMapper);
-        this.faithService = new FaithServiceImpl(faithRepository, this);
+        FaithService faithService = new FaithServiceImpl(faithRepository, this, levelService);
+        FaithSidebar faithSidebar = new FaithSidebar(this, faithService);
+
+        manager.registerEvents(new FaithListener(faithService, faithSidebar), this);
     }
 
     private Listener createItemListener() {

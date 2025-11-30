@@ -3,20 +3,25 @@ package com.github.koloss.ascension.listener;
 import com.github.koloss.ascension.model.DivineAspect;
 import com.github.koloss.ascension.model.Faith;
 import com.github.koloss.ascension.service.FaithService;
+import com.github.koloss.ascension.sidebar.FaithSidebar;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @AllArgsConstructor
 public class FaithListener implements Listener {
     private FaithService faithService;
+    private FaithSidebar faithSidebar;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -38,6 +43,19 @@ public class FaithListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerRightClick(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Player player = event.getPlayer();
+
+            DivineAspect[] aspects = DivineAspect.values();
+            Random random = new Random();
+
+            DivineAspect aspect = aspects[random.nextInt(aspects.length)];
+            faithSidebar.display(player, aspect);
+        }
+    }
+
+    @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         Player player = event.getEntity().getKiller();
         if (player == null) {
@@ -45,9 +63,16 @@ public class FaithListener implements Listener {
         }
 
         UUID userId = player.getUniqueId();
-        DivineAspect aspect = DivineAspect.WARDEN;
 
-        faithService.addByUserIdAndAspect(userId, aspect, 5);
+        Faith wardenFaith = faithService.findByUserIdAndAspect(userId, DivineAspect.WARDEN);
+        wardenFaith.getCount().addAndGet(5);
+
+        faithService.update(wardenFaith);
+
+        Faith smithFaith = faithService.findByUserIdAndAspect(userId, DivineAspect.SMITH);
+        smithFaith.getCount().addAndGet(2);
+
+        faithService.update(smithFaith);
     }
 
     @EventHandler
@@ -59,5 +84,7 @@ public class FaithListener implements Listener {
         for (Faith faith : faiths) {
             faithService.save(faith);
         }
+
+        faithSidebar.close(player);
     }
 }
