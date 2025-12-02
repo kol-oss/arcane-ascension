@@ -1,7 +1,7 @@
 package com.github.koloss.ascension.items;
 
-import com.github.koloss.ascension.common.AscensionMaterial;
-import com.github.koloss.ascension.common.AscensionParams;
+import com.github.koloss.ascension.model.AscensionMaterial;
+import com.github.koloss.ascension.constant.KeyConstants;
 import com.github.koloss.ascension.items.impl.TomeOfAscension;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,7 +46,7 @@ public class ItemManager {
         ItemMeta createdMeta = created.getItemMeta();
 
         PersistentDataContainer container = createdMeta.getPersistentDataContainer();
-        container.set(AscensionParams.MATERIAL_KEY, PersistentDataType.STRING, material.name());
+        container.set(KeyConstants.MATERIAL_KEY, PersistentDataType.STRING, material.name());
 
         created.setItemMeta(createdMeta);
         return created;

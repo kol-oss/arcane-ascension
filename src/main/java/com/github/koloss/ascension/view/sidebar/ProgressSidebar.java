@@ -1,11 +1,10 @@
-package com.github.koloss.ascension.view.sidebar.impl;
+package com.github.koloss.ascension.view.sidebar;
 
-import com.github.koloss.ascension.common.AspectParams;
-import com.github.koloss.ascension.model.DivineAspect;
-import com.github.koloss.ascension.model.Faith;
-import com.github.koloss.ascension.service.FaithService;
+import com.github.koloss.ascension.utils.SkillTypeUtils;
+import com.github.koloss.ascension.model.Skill;
+import com.github.koloss.ascension.model.SkillType;
+import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.utils.LevelUtils;
-import com.github.koloss.ascension.view.sidebar.Sidebar;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,10 +17,10 @@ import java.util.UUID;
 
 @AllArgsConstructor
 public class ProgressSidebar implements Sidebar {
-    private FaithService faithService;
+    private SkillService skillService;
 
     private Player player;
-    private DivineAspect aspect;
+    private SkillType skillType;
 
     @Override
     public Player getPlayer() {
@@ -32,8 +31,8 @@ public class ProgressSidebar implements Sidebar {
     public String getTitle() {
         LegacyComponentSerializer serializer = LegacyComponentSerializer.legacySection();
 
-        NamedTextColor titleColour = AspectParams.toTextColor(aspect);
-        Component titleComponent = Component.text(aspect.name())
+        NamedTextColor titleColour = SkillTypeUtils.toTextColor(skillType);
+        Component titleComponent = Component.text(skillType.name())
                 .color(titleColour)
                 .decorate(TextDecoration.BOLD);
 
@@ -43,20 +42,18 @@ public class ProgressSidebar implements Sidebar {
     @Override
     public List<String> getLines() {
         UUID userId = player.getUniqueId();
-        Faith faith = faithService.findByUserIdAndAspect(userId, aspect);
-        if (faith == null)
-            return List.of();
+        Skill skill = skillService.findByUserIdAndType(userId, skillType);
 
-        long currExp = faith.getCount().get();
-        long nextLevelExp = LevelUtils.getProgressOfNextLevel(currExp);
+        long currProgress = skill.getProgress();
+        long nextLevelProgress = LevelUtils.getProgressOfNextLevel(currProgress);
 
-        boolean hasNextLevel = faithService.hasOpenedNextLevel(userId, aspect);
-        int currLevel = faith.getLevel().get();
+        boolean hasNextLevel = skillService.hasOpenedNextLevel(userId, skillType);
+        int currLevel = skill.getLevel();
 
         return List.of(
                 "§7=============",
-                "§6Experience: §b" + currExp,
-                "§6Next level: §b" + nextLevelExp,
+                "§6Progress: §b" + currProgress,
+                "§6Next level: §b" + nextLevelProgress,
                 "",
                 "§6Level: §b" + currLevel + (hasNextLevel ? " §e(!)" : ""),
                 "§7============="

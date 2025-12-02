@@ -1,8 +1,8 @@
-package com.github.koloss.ascension.common;
+package com.github.koloss.ascension.constant;
 
 import org.bukkit.NamespacedKey;
 
-public final class AscensionParams {
+public final class KeyConstants {
     public static final String NAMESPACE = "ascension";
 
     public static final NamespacedKey MATERIAL_KEY = new NamespacedKey(NAMESPACE, "material");
