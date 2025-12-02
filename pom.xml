@@ -44,6 +44,13 @@
             <version>2.1.5</version>
         </dependency>
 
+        <!-- Inventory util -->
+        <dependency>
+            <groupId>com.github.stefvanschie.inventoryframework</groupId>
+            <artifactId>IF</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+
         <!-- JDBC Connection -->
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -153,6 +160,11 @@
         <repository>
             <id>papermc-repo</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 </project>
