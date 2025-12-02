@@ -6,4 +6,5 @@ public final class AscensionParams {
     public static final String NAMESPACE = "ascension";
 
     public static final NamespacedKey MATERIAL_KEY = new NamespacedKey(NAMESPACE, "material");
+    public static final NamespacedKey SIDEBAR_KEY = new NamespacedKey(NAMESPACE, "sidebar");
 }
