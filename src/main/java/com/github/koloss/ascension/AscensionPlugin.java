@@ -4,8 +4,11 @@ import com.github.koloss.ascension.config.ConfigurationFactory;
 import com.github.koloss.ascension.config.DatabaseConfiguration;
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.database.impl.DatabaseManagerImpl;
+import com.github.koloss.ascension.items.ItemManager;
 import com.github.koloss.ascension.listener.FaithListener;
+import com.github.koloss.ascension.listener.GeneralListener;
 import com.github.koloss.ascension.listener.ItemListener;
+import com.github.koloss.ascension.listener.LevelListener;
 import com.github.koloss.ascension.mapper.ModelMapper;
 import com.github.koloss.ascension.mapper.impl.FaithMapperImpl;
 import com.github.koloss.ascension.model.Faith;
@@ -15,11 +18,8 @@ import com.github.koloss.ascension.service.FaithService;
 import com.github.koloss.ascension.service.ItemService;
 import com.github.koloss.ascension.service.impl.FaithServiceImpl;
 import com.github.koloss.ascension.service.impl.ItemServiceImpl;
-import com.github.koloss.ascension.sidebar.FaithSidebar;
-import com.github.koloss.ascension.utils.InventoryService;
-import com.github.koloss.ascension.utils.LevelService;
-import com.github.koloss.ascension.utils.impl.InventoryServiceImpl;
-import com.github.koloss.ascension.utils.impl.LevelServiceImpl;
+import com.github.koloss.ascension.view.menu.manager.MenuManager;
+import com.github.koloss.ascension.view.sidebar.manager.SidebarManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
@@ -59,20 +59,27 @@ public final class AscensionPlugin extends JavaPlugin {
     }
 
     private void createFaithHandlers(PluginManager manager) {
-        LevelService levelService = new LevelServiceImpl();
         ModelMapper<Faith> faithMapper = new FaithMapperImpl();
 
         FaithRepository faithRepository = new FaithRepositoryImpl(databaseManager, faithMapper);
-        FaithService faithService = new FaithServiceImpl(faithRepository, this, levelService);
-        FaithSidebar faithSidebar = new FaithSidebar(this, faithService);
+        FaithService faithService = new FaithServiceImpl(faithRepository, this);
 
-        manager.registerEvents(new FaithListener(faithService, faithSidebar), this);
+        manager.registerEvents(new FaithListener(faithService), this);
+
+        SidebarManager sidebarManager = SidebarManager.of(this);
+        MenuManager menuManager = MenuManager.of(this);
+
+        LevelListener levelListener = new LevelListener(sidebarManager, menuManager, faithService);
+        manager.registerEvents(levelListener, this);
+
+        GeneralListener generalListener = new GeneralListener(menuManager);
+        manager.registerEvents(generalListener, this);
     }
 
     private Listener createItemListener() {
-        InventoryService inventoryService = new InventoryServiceImpl();
-        ItemService itemService = new ItemServiceImpl(inventoryService);
+        ItemManager itemManager = ItemManager.of(this);
 
+        ItemService itemService = new ItemServiceImpl(this, itemManager);
         return new ItemListener(itemService);
     }
 
