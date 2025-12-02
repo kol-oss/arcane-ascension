@@ -16,4 +16,8 @@ public class LevelUtils {
 
         return (userLevel + 1) == level && expectedLevel > userLevel;
     }
+
+    public static int getBuffForLevel(int level) {
+        return level * LevelParams.BUFF_PER_LEVEL;
+    }
 }

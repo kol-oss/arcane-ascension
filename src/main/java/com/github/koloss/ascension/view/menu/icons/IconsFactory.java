@@ -2,6 +2,7 @@ package com.github.koloss.ascension.view.menu.icons;
 
 import com.github.koloss.ascension.common.AspectParams;
 import com.github.koloss.ascension.model.DivineAspect;
+import com.github.koloss.ascension.utils.LevelUtils;
 import com.github.koloss.ascension.utils.NumberUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -120,6 +121,28 @@ public class IconsFactory {
         ItemStack levelStack = new ItemStack(material);
         ItemMeta itemMeta = levelStack.getItemMeta();
         itemMeta.displayName(displayName);
+
+        int oldBuff = LevelUtils.getBuffForLevel(level - 1);
+        int buff = LevelUtils.getBuffForLevel(level);
+
+        List<Component> lore = List.of(
+                Component.text("§7Rewards:"),
+                Component.text("  §6" + levelName),
+                Component.text()
+                        .append(Component.text("    Deal ", NamedTextColor.WHITE))
+                        .append(Component.text(oldBuff + "➜", NamedTextColor.DARK_GRAY))
+                        .append(Component.text(buff + "%", NamedTextColor.GREEN))
+                        .append(Component.text(" more damage", NamedTextColor.WHITE))
+                        .decoration(TextDecoration.ITALIC, false)
+                        .build(),
+                Component.text("    to mobs.", NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false),
+                Component
+                        .text("  +200 mana size", NamedTextColor.AQUA)
+                        .decoration(TextDecoration.ITALIC, false)
+        );
+
+        itemMeta.lore(lore);
+
         levelStack.setItemMeta(itemMeta);
         levelStack.addItemFlags(ItemFlag.values());
 

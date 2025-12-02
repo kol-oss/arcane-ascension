@@ -99,17 +99,7 @@ public class LevelMenu implements Menu {
         return levelsPane;
     }
 
-    private Pane getHelpersPane(ChestGui gui) {
-        StaticPane helpersPane = new StaticPane(0, MENU_HEIGHT - 1, MENU_WIDTH, 1);
-
-        ItemStack returnItemStack = IconsFactory.createReturnIcon();
-        GuiItem returnGuiItem = new GuiItem(returnItemStack, _ -> {
-            DisplayGeneralMenuEvent returnEvent = new DisplayGeneralMenuEvent(player);
-            Bukkit.getPluginManager().callEvent(returnEvent);
-        });
-
-        helpersPane.addItem(returnGuiItem, MENU_WIDTH / 2, 0);
-
+    private void updateHelpersPane(ChestGui gui, StaticPane pane) {
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
         String sidebarValue = dataContainer.get(AscensionParams.SIDEBAR_KEY, PersistentDataType.STRING);
 
@@ -122,16 +112,33 @@ public class LevelMenu implements Menu {
             if (isFollowing) {
                 followEvent = new CloseProgressSidebarEvent(player);
                 dataContainer.remove(AscensionParams.SIDEBAR_KEY);
-            }
-            else {
+            } else {
                 followEvent = new DisplayProgressSidebarEvent(player, aspect);
                 dataContainer.set(AscensionParams.SIDEBAR_KEY, PersistentDataType.STRING, aspect.name());
             }
 
             Bukkit.getPluginManager().callEvent(followEvent);
+
+            updateHelpersPane(gui, pane);
+            gui.update();
         });
 
-        helpersPane.addItem(followGuiItem, MENU_WIDTH / 2 - 1, 0);
+        pane.removeItem(MENU_WIDTH / 2 - 1, 0);
+        pane.addItem(followGuiItem, MENU_WIDTH / 2 - 1, 0);
+    }
+
+    private Pane getHelpersPane(ChestGui gui) {
+        StaticPane helpersPane = new StaticPane(0, MENU_HEIGHT - 1, MENU_WIDTH, 1);
+
+        ItemStack returnItemStack = IconsFactory.createReturnIcon();
+        GuiItem returnGuiItem = new GuiItem(returnItemStack, _ -> {
+            DisplayGeneralMenuEvent returnEvent = new DisplayGeneralMenuEvent(player);
+            Bukkit.getPluginManager().callEvent(returnEvent);
+        });
+
+        helpersPane.addItem(returnGuiItem, MENU_WIDTH / 2, 0);
+        updateHelpersPane(gui, helpersPane);
+
         return helpersPane;
     }
 
