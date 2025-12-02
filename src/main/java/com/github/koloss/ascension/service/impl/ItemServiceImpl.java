@@ -1,12 +1,11 @@
 package com.github.koloss.ascension.service.impl;
 
 import com.github.koloss.ascension.common.AscensionMaterial;
-import com.github.koloss.ascension.items.ItemFactory;
-import com.github.koloss.ascension.items.ItemHandler;
 import com.github.koloss.ascension.common.AscensionParams;
-import com.github.koloss.ascension.utils.InventoryService;
+import com.github.koloss.ascension.items.ItemHandler;
+import com.github.koloss.ascension.items.ItemManager;
 import com.github.koloss.ascension.service.ItemService;
-import lombok.AllArgsConstructor;
+import com.github.koloss.ascension.utils.InventoryUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -17,21 +16,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 
-@AllArgsConstructor
-public class ItemServiceImpl implements ItemService {
-    private InventoryService inventoryService;
+public class ItemServiceImpl extends BaseService implements ItemService {
+    private final ItemManager itemManager;
+
+    public ItemServiceImpl(Plugin plugin, ItemManager itemManager) {
+        super(plugin);
+
+        this.itemManager = itemManager;
+    }
 
     private void giveTome(Player player) {
         Inventory inventory = player.getInventory();
         AscensionMaterial material = AscensionMaterial.TOME_OF_ASCENSION;
 
-        boolean contains = inventoryService.contains(inventory, material);
+        boolean contains = InventoryUtils.contains(inventory, material);
         if (contains) {
             return;
         }
 
-        ItemStack tome = ItemFactory.create(material);
+        ItemStack tome = itemManager.create(material);
         inventory.addItem(tome);
     }
 
@@ -62,7 +67,7 @@ public class ItemServiceImpl implements ItemService {
         Action action = event.getAction();
 
         if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-            ItemHandler item = ItemFactory.getHandler(material);
+            ItemHandler item = itemManager.getHandler(material);
             item.onRightClick(event);
         }
     }
