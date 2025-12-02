@@ -1,16 +1,15 @@
-package com.github.koloss.ascension.utils.impl;
+package com.github.koloss.ascension.utils;
 
 import com.github.koloss.ascension.common.AscensionMaterial;
 import com.github.koloss.ascension.common.AscensionParams;
-import com.github.koloss.ascension.utils.InventoryService;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class InventoryServiceImpl implements InventoryService {
-    public boolean contains(Inventory inventory, AscensionMaterial material) {
+public class InventoryUtils {
+    public static boolean contains(Inventory inventory, AscensionMaterial material) {
         for (ItemStack item : inventory.getContents()) {
             if (item == null || !item.hasItemMeta()) {
                 continue;
