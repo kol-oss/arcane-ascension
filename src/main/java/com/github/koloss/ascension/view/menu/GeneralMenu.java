@@ -2,8 +2,8 @@ package com.github.koloss.ascension.view.menu;
 
 import com.github.koloss.ascension.event.BaseEvent;
 import com.github.koloss.ascension.event.DisplayProgressMenuEvent;
-import com.github.koloss.ascension.model.DivineAspect;
-import com.github.koloss.ascension.view.menu.icons.IconsFactory;
+import com.github.koloss.ascension.model.SkillType;
+import com.github.koloss.ascension.view.icons.IconsFactory;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
@@ -37,12 +37,12 @@ public class GeneralMenu implements Menu {
         StaticPane centerPane = new StaticPane(0, 2, MENU_WIDTH, 1);
 
         int index = 3;
-        for (DivineAspect aspect : DivineAspect.values()) {
-            ItemStack itemStack = IconsFactory.createAspectIcon(aspect, null);
+        for (SkillType type : SkillType.values()) {
+            ItemStack itemStack = IconsFactory.createSkillTypeIcon(type, null);
 
             centerPane.addItem(new GuiItem(itemStack, event -> {
                 Player player = (Player) event.getWhoClicked();
-                BaseEvent displayEvent = new DisplayProgressMenuEvent(player, aspect);
+                BaseEvent displayEvent = new DisplayProgressMenuEvent(player, type);
 
                 Bukkit.getPluginManager().callEvent(displayEvent);
             }), index++, 0);
@@ -64,7 +64,7 @@ public class GeneralMenu implements Menu {
         // Spells
         Pane topPane = getTopPane();
 
-        // Progress in Aspects
+        // Progress in Skills
         Pane centerPane = getCenterPane();
 
         // Villages

@@ -1,7 +1,7 @@
 package com.github.koloss.ascension.service.impl;
 
-import com.github.koloss.ascension.common.AscensionMaterial;
-import com.github.koloss.ascension.common.AscensionParams;
+import com.github.koloss.ascension.model.AscensionMaterial;
+import com.github.koloss.ascension.constant.KeyConstants;
 import com.github.koloss.ascension.items.ItemHandler;
 import com.github.koloss.ascension.items.ItemManager;
 import com.github.koloss.ascension.service.ItemService;
@@ -57,7 +57,7 @@ public class ItemServiceImpl extends BaseService implements ItemService {
         ItemMeta meta = itemStack.getItemMeta();
         PersistentDataContainer container = meta.getPersistentDataContainer();
 
-        String materialName = container.get(AscensionParams.MATERIAL_KEY, PersistentDataType.STRING);
+        String materialName = container.get(KeyConstants.MATERIAL_KEY, PersistentDataType.STRING);
         if (materialName == null)
             return;
 

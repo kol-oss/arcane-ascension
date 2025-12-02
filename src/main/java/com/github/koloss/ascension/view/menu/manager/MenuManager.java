@@ -34,8 +34,7 @@ public class MenuManager {
         meta.displayName(Component.text("§c" + title));
         glass.setItemMeta(meta);
 
-        background.addItem(new GuiItem(glass, _ -> {
-        }));
+        background.addItem(new GuiItem(glass));
         background.setRepeat(true);
         background.setPriority(Pane.Priority.LOW);
 

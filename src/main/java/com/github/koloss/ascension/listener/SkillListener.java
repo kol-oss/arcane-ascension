@@ -1,16 +1,17 @@
 package com.github.koloss.ascension.listener;
 
-import com.github.koloss.ascension.common.AscensionParams;
 import com.github.koloss.ascension.event.CloseProgressSidebarEvent;
 import com.github.koloss.ascension.event.DisplayProgressMenuEvent;
 import com.github.koloss.ascension.event.DisplayProgressSidebarEvent;
-import com.github.koloss.ascension.model.DivineAspect;
-import com.github.koloss.ascension.service.FaithService;
-import com.github.koloss.ascension.view.menu.LevelMenu;
+import com.github.koloss.ascension.model.Skill;
+import com.github.koloss.ascension.model.SkillType;
+import com.github.koloss.ascension.service.SkillService;
+import com.github.koloss.ascension.utils.SkillTypeUtils;
+import com.github.koloss.ascension.view.menu.SkillMenu;
 import com.github.koloss.ascension.view.menu.Menu;
 import com.github.koloss.ascension.view.menu.manager.MenuManager;
+import com.github.koloss.ascension.view.sidebar.ProgressSidebar;
 import com.github.koloss.ascension.view.sidebar.Sidebar;
-import com.github.koloss.ascension.view.sidebar.impl.ProgressSidebar;
 import com.github.koloss.ascension.view.sidebar.manager.SidebarManager;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
@@ -19,45 +20,56 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
+
+import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
-public class LevelListener implements Listener {
+public class SkillListener implements Listener {
     private static final long REFRESH_SIDEBAR_INTERVAL = 10L;
 
-    private SidebarManager sidebarManager;
+    private SkillService skillService;
+
     private MenuManager menuManager;
-    private FaithService faithService;
+    private SidebarManager sidebarManager;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+        UUID userId = player.getUniqueId();
 
-        String activeSidebar = dataContainer.get(AscensionParams.SIDEBAR_KEY, PersistentDataType.STRING);
-        DivineAspect aspect = activeSidebar != null ? DivineAspect.valueOf(activeSidebar) : null;
+        List<Skill> skills = skillService.findAllByUserId(userId);
+        if (skills.isEmpty()) {
+            for (SkillType type : SkillType.values()) {
+                Skill created = skillService.create(userId, type);
+                skills.add(created);
+            }
+        } else {
+            PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+            SkillType type = SkillTypeUtils.fromContainer(dataContainer);
 
-        if (aspect != null) {
-            Sidebar sidebar = new ProgressSidebar(faithService, player, aspect);
-            sidebarManager.display(sidebar, REFRESH_SIDEBAR_INTERVAL);
+            if (type != null) {
+                Sidebar sidebar = new ProgressSidebar(skillService, player, type);
+                sidebarManager.display(sidebar, REFRESH_SIDEBAR_INTERVAL);
+            }
         }
     }
 
     @EventHandler
     public void onDisplayProgressSidebar(DisplayProgressSidebarEvent event) {
         Player player = event.getPlayer();
-        DivineAspect aspect = event.getAspect();
+        SkillType type = event.getSkillType();
 
-        Sidebar sidebar = new ProgressSidebar(faithService, player, aspect);
+        Sidebar sidebar = new ProgressSidebar(skillService, player, type);
         sidebarManager.display(sidebar, REFRESH_SIDEBAR_INTERVAL);
     }
 
     @EventHandler
     public void onDisplayProgressMenu(DisplayProgressMenuEvent event) {
         Player player = event.getPlayer();
-        DivineAspect aspect = event.getAspect();
+        SkillType type = event.getSkillType();
 
-        Menu menu = new LevelMenu(faithService, player, aspect);
+        Menu menu = new SkillMenu(skillService, player, type);
         menuManager.display(menu, player);
     }
 
@@ -70,6 +82,13 @@ public class LevelListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+        UUID userId = player.getUniqueId();
+
+        List<Skill> skills = skillService.findAllByUserId(userId);
+        for (Skill skill : skills) {
+            skillService.save(skill);
+        }
+
         sidebarManager.close(player);
     }
 }
