@@ -1,27 +1,34 @@
 package com.github.koloss.ascension.listener;
 
+import com.github.koloss.ascension.event.IncrementLevelEvent;
 import com.github.koloss.ascension.model.DivineAspect;
 import com.github.koloss.ascension.model.Faith;
 import com.github.koloss.ascension.service.FaithService;
-import com.github.koloss.ascension.sidebar.FaithSidebar;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 @AllArgsConstructor
 public class FaithListener implements Listener {
     private FaithService faithService;
-    private FaithSidebar faithSidebar;
+
+    @EventHandler
+    public void onIncrementLevel(IncrementLevelEvent event) {
+        Player player = event.getPlayer();
+        DivineAspect aspect = event.getAspect();
+
+        Faith faith = faithService.findByUserIdAndAspect(player.getUniqueId(), aspect);
+        faith.getLevel().incrementAndGet();
+
+        faithService.update(faith);
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -39,19 +46,6 @@ public class FaithListener implements Listener {
         player.sendMessage("Welcome back!\nYour faiths:");
         for (Faith faith : faiths) {
             player.sendMessage(faith.getAspect() + ": " + faith.getCount());
-        }
-    }
-
-    @EventHandler
-    public void onPlayerRightClick(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Player player = event.getPlayer();
-
-            DivineAspect[] aspects = DivineAspect.values();
-            Random random = new Random();
-
-            DivineAspect aspect = aspects[random.nextInt(aspects.length)];
-            faithSidebar.display(player, aspect);
         }
     }
 
@@ -84,7 +78,5 @@ public class FaithListener implements Listener {
         for (Faith faith : faiths) {
             faithService.save(faith);
         }
-
-        faithSidebar.close(player);
     }
 }
