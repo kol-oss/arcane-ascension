@@ -1,16 +1,23 @@
 package com.github.koloss.ascension.items.impl;
 
+import com.github.koloss.ascension.event.DisplayGeneralMenuEvent;
 import com.github.koloss.ascension.items.ItemHandler;
+import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.plugin.Plugin;
 
+@AllArgsConstructor
 public class TomeOfAscension implements ItemHandler {
+    private Plugin plugin;
+
     @Override
     public ItemStack create() {
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
@@ -30,6 +37,6 @@ public class TomeOfAscension implements ItemHandler {
     @Override
     public void onRightClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        player.openInventory(player.getInventory());
+        Bukkit.getPluginManager().callEvent(new DisplayGeneralMenuEvent(player));
     }
 }
