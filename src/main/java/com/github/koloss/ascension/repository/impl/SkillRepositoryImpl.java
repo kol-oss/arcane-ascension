@@ -2,9 +2,9 @@ package com.github.koloss.ascension.repository.impl;
 
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.mapper.ModelMapper;
-import com.github.koloss.ascension.model.DivineAspect;
-import com.github.koloss.ascension.model.Faith;
-import com.github.koloss.ascension.repository.FaithRepository;
+import com.github.koloss.ascension.model.SkillType;
+import com.github.koloss.ascension.model.Skill;
+import com.github.koloss.ascension.repository.SkillRepository;
 import com.github.koloss.ascension.repository.base.impl.BaseRepository;
 
 import java.sql.Connection;
@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class FaithRepositoryImpl extends BaseRepository<Faith, UUID> implements FaithRepository {
-    private static final String TABLE_NAME = "faiths";
+public class SkillRepositoryImpl extends BaseRepository<Skill, UUID> implements SkillRepository {
+    private static final String TABLE_NAME = "skills";
 
-    public FaithRepositoryImpl(DatabaseManager manager, ModelMapper<Faith> mapper) {
+    public SkillRepositoryImpl(DatabaseManager manager, ModelMapper<Skill> mapper) {
         super(manager, mapper);
     }
 
@@ -30,7 +30,7 @@ public class FaithRepositoryImpl extends BaseRepository<Faith, UUID> implements 
 
     @Override
     protected String getInsertString() {
-        return "INSERT INTO " + TABLE_NAME + " (id, user_id, aspect, level, count) VALUES (?, ?, ?, ?, ?)";
+        return "INSERT INTO " + TABLE_NAME + " (id, user_id, type, level, count) VALUES (?, ?, ?, ?, ?)";
     }
 
     @Override
@@ -39,15 +39,15 @@ public class FaithRepositoryImpl extends BaseRepository<Faith, UUID> implements 
     }
 
     @Override
-    public Optional<Faith> findByUserIdAndAspect(UUID userId, DivineAspect aspect) {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE user_id = ? AND aspect = ?";
+    public Optional<Skill> findByUserIdAndType(UUID userId, SkillType type) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE user_id = ? AND type = ?";
 
         try (
                 Connection connection = manager.getConnection();
                 PreparedStatement ps = connection.prepareStatement(query)
         ) {
             ps.setString(1, userId.toString());
-            ps.setString(2, aspect.toString());
+            ps.setString(2, type.toString());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
@@ -62,8 +62,8 @@ public class FaithRepositoryImpl extends BaseRepository<Faith, UUID> implements 
     }
 
     @Override
-    public List<Faith> findAllByUserId(UUID userId) {
-        List<Faith> result = new ArrayList<>();
+    public List<Skill> findAllByUserId(UUID userId) {
+        List<Skill> result = new ArrayList<>();
 
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE user_id = ?";
         try (

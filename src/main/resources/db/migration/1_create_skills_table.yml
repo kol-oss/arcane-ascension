@@ -4,7 +4,7 @@ databaseChangeLog:
       author: kol.oss
       changes:
         - createTable:
-            tableName: faiths
+            tableName: skills
             columns:
               - column:
                   name: id
@@ -18,7 +18,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: aspect
+                  name: type
                   type: VARCHAR(100)
                   constraints:
                     nullable: false

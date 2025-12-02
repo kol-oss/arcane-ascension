@@ -1,17 +1,17 @@
 package com.github.koloss.ascension.view.menu;
 
-import com.github.koloss.ascension.common.AscensionParams;
-import com.github.koloss.ascension.common.AspectParams;
-import com.github.koloss.ascension.common.LevelParams;
-import com.github.koloss.ascension.common.MenuParams;
+import com.github.koloss.ascension.constant.KeyConstants;
+import com.github.koloss.ascension.constant.LevelConstants;
+import com.github.koloss.ascension.constant.MenuConstants;
 import com.github.koloss.ascension.event.CloseProgressSidebarEvent;
 import com.github.koloss.ascension.event.DisplayGeneralMenuEvent;
 import com.github.koloss.ascension.event.DisplayProgressSidebarEvent;
-import com.github.koloss.ascension.model.DivineAspect;
-import com.github.koloss.ascension.model.Faith;
-import com.github.koloss.ascension.service.FaithService;
+import com.github.koloss.ascension.model.Skill;
+import com.github.koloss.ascension.model.SkillType;
+import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.utils.LevelUtils;
-import com.github.koloss.ascension.view.menu.icons.IconsFactory;
+import com.github.koloss.ascension.utils.SkillTypeUtils;
+import com.github.koloss.ascension.view.icons.IconsFactory;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
@@ -30,17 +30,18 @@ import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class LevelMenu implements Menu {
+public class SkillMenu implements Menu {
     private static final int MENU_WIDTH = 9;
     private static final int MENU_HEIGHT = 5;
 
-    private FaithService faithService;
+    private SkillService skillService;
+
     private Player player;
-    private DivineAspect aspect;
+    private SkillType skillType;
 
     @Override
     public ChestGui create() {
-        String menuName = AspectParams.toString(aspect);
+        String menuName = SkillTypeUtils.toString(skillType);
         return new ChestGui(MENU_HEIGHT, menuName);
     }
 
@@ -53,29 +54,29 @@ public class LevelMenu implements Menu {
         else
             material = Material.GREEN_WOOL;
 
-        return IconsFactory.createLevelIcon(aspect, material, level);
+        return IconsFactory.createLevelIcon(skillType, material, level);
     }
 
-    private void updateLevel(ChestGui gui, StaticPane pane, Faith faith) {
-        faith.getLevel().incrementAndGet();
-        faithService.update(faith);
+    private void updateLevel(ChestGui gui, StaticPane pane, Skill skill) {
+        skill.getLevelCount().incrementAndGet();
+        skillService.update(skill);
 
-        updateLevelsPane(gui, pane, faith);
+        updateLevelsPane(gui, pane, skill);
         gui.update();
     }
 
-    private GuiItem createLevelItem(ChestGui gui, StaticPane pane, int level, Faith faith) {
-        int userLevel = faith.getLevel().get();
-        boolean isOpened = LevelUtils.isLevelOpen(level, userLevel, faith.getCount().get());
-        ItemStack levelItemStack = createLevelIcon(level, userLevel, isOpened);
+    private GuiItem createLevelItem(ChestGui gui, StaticPane pane, int level, Skill skill) {
+        int userLevel = skill.getLevel();
+        boolean isOpened = LevelUtils.isLevelOpen(level, userLevel, skill.getProgress());
 
-        return new GuiItem(levelItemStack, isOpened ? _ -> updateLevel(gui, pane, faith) : null);
+        ItemStack levelItemStack = createLevelIcon(level, userLevel, isOpened);
+        return new GuiItem(levelItemStack, isOpened ? _ -> updateLevel(gui, pane, skill) : null);
     }
 
-    private void updateLevelsPane(ChestGui gui, StaticPane pane, Faith faith) {
-        for (int i = LevelParams.MIN_LEVEL; i <= LevelParams.MAX_LEVEL; i++) {
-            Slot levelSlot = MenuParams.getSlot(i);
-            GuiItem levelItem = createLevelItem(gui, pane, i, faith);
+    private void updateLevelsPane(ChestGui gui, StaticPane pane, Skill skill) {
+        for (int i = LevelConstants.MIN_LEVEL; i <= LevelConstants.MAX_LEVEL; i++) {
+            Slot levelSlot = MenuConstants.getSlot(i);
+            GuiItem levelItem = createLevelItem(gui, pane, i, skill);
 
             int x = levelSlot.getX(MENU_WIDTH);
             int y = levelSlot.getY(MENU_HEIGHT);
@@ -87,34 +88,33 @@ public class LevelMenu implements Menu {
 
     private Pane getLevelsPane(ChestGui gui) {
         UUID userId = player.getUniqueId();
-        Faith faith = faithService.findByUserIdAndAspect(userId, aspect);
+        Skill skill = skillService.findByUserIdAndType(userId, skillType);
 
         StaticPane levelsPane = new StaticPane(0, 0, MENU_WIDTH, MENU_HEIGHT - 1);
 
-        long currExp = faith.getCount().get();
-        ItemStack aspectItem = IconsFactory.createAspectIcon(aspect, currExp);
-        levelsPane.addItem(new GuiItem(aspectItem), 0, 0);
+        long currExp = skill.getProgress();
+        ItemStack skillTypeItem = IconsFactory.createSkillTypeIcon(skillType, currExp);
+        levelsPane.addItem(new GuiItem(skillTypeItem), 0, 0);
 
-        updateLevelsPane(gui, levelsPane, faith);
+        updateLevelsPane(gui, levelsPane, skill);
         return levelsPane;
     }
 
     private void updateHelpersPane(ChestGui gui, StaticPane pane) {
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-        String sidebarValue = dataContainer.get(AscensionParams.SIDEBAR_KEY, PersistentDataType.STRING);
+        SkillType displayedType = SkillTypeUtils.fromContainer(dataContainer);
 
-        DivineAspect sidebarAspect = sidebarValue != null ? DivineAspect.valueOf(sidebarValue) : null;
-        boolean isFollowing = sidebarAspect != null && sidebarAspect == aspect;
+        boolean isFollowing = displayedType != null && displayedType == skillType;
 
         ItemStack followItemStack = IconsFactory.createFollowIcon(isFollowing);
         GuiItem followGuiItem = new GuiItem(followItemStack, _ -> {
             Event followEvent;
             if (isFollowing) {
                 followEvent = new CloseProgressSidebarEvent(player);
-                dataContainer.remove(AscensionParams.SIDEBAR_KEY);
+                dataContainer.remove(KeyConstants.SIDEBAR_KEY);
             } else {
-                followEvent = new DisplayProgressSidebarEvent(player, aspect);
-                dataContainer.set(AscensionParams.SIDEBAR_KEY, PersistentDataType.STRING, aspect.name());
+                followEvent = new DisplayProgressSidebarEvent(player, skillType);
+                dataContainer.set(KeyConstants.SIDEBAR_KEY, PersistentDataType.STRING, skillType.name());
             }
 
             Bukkit.getPluginManager().callEvent(followEvent);
@@ -123,8 +123,10 @@ public class LevelMenu implements Menu {
             gui.update();
         });
 
-        pane.removeItem(MENU_WIDTH / 2 - 1, 0);
-        pane.addItem(followGuiItem, MENU_WIDTH / 2 - 1, 0);
+        int x = MENU_WIDTH / 2 - 1;
+
+        pane.removeItem(x, 0);
+        pane.addItem(followGuiItem, x, 0);
     }
 
     private Pane getHelpersPane(ChestGui gui) {

@@ -1,7 +1,7 @@
 package com.github.koloss.ascension.utils;
 
-import com.github.koloss.ascension.common.AscensionMaterial;
-import com.github.koloss.ascension.common.AscensionParams;
+import com.github.koloss.ascension.model.AscensionMaterial;
+import com.github.koloss.ascension.constant.KeyConstants;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,7 +17,7 @@ public class InventoryUtils {
 
             ItemMeta meta = item.getItemMeta();
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            String materialName = container.get(AscensionParams.MATERIAL_KEY, PersistentDataType.STRING);
+            String materialName = container.get(KeyConstants.MATERIAL_KEY, PersistentDataType.STRING);
 
             if (material == AscensionMaterial.valueOf(materialName)) {
                 return true;

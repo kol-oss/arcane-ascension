@@ -1,9 +1,9 @@
-package com.github.koloss.ascension.view.menu.icons;
+package com.github.koloss.ascension.view.icons;
 
-import com.github.koloss.ascension.common.AspectParams;
-import com.github.koloss.ascension.model.DivineAspect;
+import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.utils.LevelUtils;
 import com.github.koloss.ascension.utils.NumberUtils;
+import com.github.koloss.ascension.utils.SkillTypeUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -48,8 +48,8 @@ public class IconsFactory {
         followMeta.displayName(displayName);
 
         String loreData = !isFollowing ?
-                "Enable this aspect live info in sidebar" :
-                "Disable this aspect live info in sidebar";
+                "Enable this info in sidebar" :
+                "Disable this info in sidebar";
 
         List<Component> lore = List.of(
                 Component
@@ -78,15 +78,15 @@ public class IconsFactory {
         return returnStack;
     }
 
-    public static ItemStack createAspectIcon(DivineAspect aspect, Long currExp) {
-        String title = AspectParams.toString(aspect);
-        NamedTextColor color = AspectParams.toTextColor(aspect);
+    public static ItemStack createSkillTypeIcon(SkillType type, Long currExp) {
+        String title = SkillTypeUtils.toString(type);
+        NamedTextColor color = SkillTypeUtils.toTextColor(type);
 
         Component displayName = Component
                 .text(title, color)
                 .decoration(TextDecoration.ITALIC, false);
 
-        Material material = AspectParams.toMaterial(aspect);
+        Material material = SkillTypeUtils.toMaterial(type);
 
         ItemStack itemStack = new ItemStack(material);
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -97,7 +97,7 @@ public class IconsFactory {
                     Component.text(""),
                     Component.text("§6Experience: §b" + currExp),
                     Component
-                            .text(AspectParams.toDescription(aspect), NamedTextColor.GRAY)
+                            .text(SkillTypeUtils.toDescription(type), NamedTextColor.GRAY)
                             .decorate(TextDecoration.ITALIC)
             );
 
@@ -110,9 +110,11 @@ public class IconsFactory {
         return itemStack;
     }
 
-    public static ItemStack createLevelIcon(DivineAspect aspect, Material material, int level) {
-        String levelName = AspectParams.toString(aspect) + " " + NumberUtils.toRoman(level);
-        NamedTextColor color = AspectParams.toTextColor(aspect);
+    public static ItemStack createLevelIcon(SkillType skillType, Material material, int level) {
+        String levelString = NumberUtils.toRoman(level);
+
+        String levelName = SkillTypeUtils.toString(skillType) + " Level " + levelString;
+        NamedTextColor color = SkillTypeUtils.toTextColor(skillType);
 
         Component displayName = Component
                 .text(levelName, color)
@@ -127,7 +129,7 @@ public class IconsFactory {
 
         List<Component> lore = List.of(
                 Component.text("§7Rewards:"),
-                Component.text("  §6" + levelName),
+                Component.text("  §6" + SkillTypeUtils.toAbilityString(skillType) + " " + levelString),
                 Component.text()
                         .append(Component.text("    Deal ", NamedTextColor.WHITE))
                         .append(Component.text(oldBuff + "➜", NamedTextColor.DARK_GRAY))

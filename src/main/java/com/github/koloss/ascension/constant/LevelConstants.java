@@ -1,6 +1,6 @@
-package com.github.koloss.ascension.common;
+package com.github.koloss.ascension.constant;
 
-public final class LevelParams {
+public final class LevelConstants {
     public static final int MIN_LEVEL = 1;
     public static final int MAX_LEVEL = 23;
 

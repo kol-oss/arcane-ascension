@@ -5,19 +5,18 @@ import com.github.koloss.ascension.config.DatabaseConfiguration;
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.database.impl.DatabaseManagerImpl;
 import com.github.koloss.ascension.items.ItemManager;
-import com.github.koloss.ascension.listener.FaithListener;
 import com.github.koloss.ascension.listener.GeneralListener;
 import com.github.koloss.ascension.listener.ItemListener;
-import com.github.koloss.ascension.listener.LevelListener;
+import com.github.koloss.ascension.listener.SkillListener;
 import com.github.koloss.ascension.mapper.ModelMapper;
-import com.github.koloss.ascension.mapper.impl.FaithMapperImpl;
-import com.github.koloss.ascension.model.Faith;
-import com.github.koloss.ascension.repository.FaithRepository;
-import com.github.koloss.ascension.repository.impl.FaithRepositoryImpl;
-import com.github.koloss.ascension.service.FaithService;
+import com.github.koloss.ascension.mapper.impl.SkillMapperImpl;
+import com.github.koloss.ascension.model.Skill;
+import com.github.koloss.ascension.repository.SkillRepository;
+import com.github.koloss.ascension.repository.impl.SkillRepositoryImpl;
 import com.github.koloss.ascension.service.ItemService;
-import com.github.koloss.ascension.service.impl.FaithServiceImpl;
+import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.service.impl.ItemServiceImpl;
+import com.github.koloss.ascension.service.impl.SkillServiceImpl;
 import com.github.koloss.ascension.view.menu.manager.MenuManager;
 import com.github.koloss.ascension.view.sidebar.manager.SidebarManager;
 import org.bukkit.Bukkit;
@@ -31,19 +30,28 @@ import java.io.File;
 public final class AscensionPlugin extends JavaPlugin {
     private static final String DB_CONFIG_FILE = "database.yml";
 
+    private final MenuManager menuManager = MenuManager.of(this);
+    private final SidebarManager sidebarManager = SidebarManager.of(this);
     private DatabaseManager databaseManager;
 
     @Override
     public void onEnable() {
-        createDatabaseManager();
+        this.databaseManager = createDatabaseManager();
 
+        // Item listener
         PluginManager manager = Bukkit.getPluginManager();
         manager.registerEvents(createItemListener(), this);
 
-        createFaithHandlers(manager);
+        // Skill listener
+        Listener skillListener = createSkillListener();
+        manager.registerEvents(skillListener, this);
+
+        // General listener
+        GeneralListener generalListener = new GeneralListener(menuManager);
+        manager.registerEvents(generalListener, this);
     }
 
-    private void createDatabaseManager() {
+    private DatabaseManager createDatabaseManager() {
         File file = new File(getDataFolder(), DB_CONFIG_FILE);
         if (!file.exists()) {
             saveResource(DB_CONFIG_FILE, false);
@@ -55,25 +63,16 @@ public final class AscensionPlugin extends JavaPlugin {
         DatabaseManager manager = new DatabaseManagerImpl(config);
         manager.migrate(this.getClassLoader());
 
-        this.databaseManager = manager;
+        return manager;
     }
 
-    private void createFaithHandlers(PluginManager manager) {
-        ModelMapper<Faith> faithMapper = new FaithMapperImpl();
+    private Listener createSkillListener() {
+        ModelMapper<Skill> skillMapper = new SkillMapperImpl();
 
-        FaithRepository faithRepository = new FaithRepositoryImpl(databaseManager, faithMapper);
-        FaithService faithService = new FaithServiceImpl(faithRepository, this);
+        SkillRepository skillRepository = new SkillRepositoryImpl(databaseManager, skillMapper);
+        SkillService skillService = new SkillServiceImpl(skillRepository, this);
 
-        manager.registerEvents(new FaithListener(faithService), this);
-
-        SidebarManager sidebarManager = SidebarManager.of(this);
-        MenuManager menuManager = MenuManager.of(this);
-
-        LevelListener levelListener = new LevelListener(sidebarManager, menuManager, faithService);
-        manager.registerEvents(levelListener, this);
-
-        GeneralListener generalListener = new GeneralListener(menuManager);
-        manager.registerEvents(generalListener, this);
+        return new SkillListener(skillService, menuManager, sidebarManager);
     }
 
     private Listener createItemListener() {

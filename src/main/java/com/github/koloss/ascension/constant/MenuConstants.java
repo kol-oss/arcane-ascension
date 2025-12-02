@@ -1,10 +1,10 @@
-package com.github.koloss.ascension.common;
+package com.github.koloss.ascension.constant;
 
 import com.github.stefvanschie.inventoryframework.pane.util.Slot;
 
 import java.util.Map;
 
-public final class MenuParams {
+public final class MenuConstants {
     /**
      * Represents the slots for 23 levels menu with corresponding structure
      *

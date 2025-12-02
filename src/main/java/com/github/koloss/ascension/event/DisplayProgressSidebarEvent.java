@@ -1,6 +1,6 @@
 package com.github.koloss.ascension.event;
 
-import com.github.koloss.ascension.model.DivineAspect;
+import com.github.koloss.ascension.model.SkillType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -9,5 +9,5 @@ import org.bukkit.entity.Player;
 @AllArgsConstructor
 public class DisplayProgressSidebarEvent extends BaseEvent {
     private Player player;
-    private DivineAspect aspect;
+    private SkillType skillType;
 }

@@ -1,23 +1,23 @@
 package com.github.koloss.ascension.utils;
 
-import com.github.koloss.ascension.common.LevelParams;
+import com.github.koloss.ascension.constant.LevelConstants;
 
 public class LevelUtils {
-    public static long getProgressOfNextLevel(long experience) {
-        return (long) getLevelFromProgress(experience) * LevelParams.XP_PR_LEVEL + LevelParams.XP_PR_LEVEL;
+    public static long getProgressOfNextLevel(long progress) {
+        return (long) getLevelFromProgress(progress) * LevelConstants.XP_PR_LEVEL + LevelConstants.XP_PR_LEVEL;
     }
 
-    public static int getLevelFromProgress(long experience) {
-        return (int) (experience / LevelParams.XP_PR_LEVEL);
+    public static int getLevelFromProgress(long progress) {
+        return (int) (progress / LevelConstants.XP_PR_LEVEL);
     }
 
-    public static boolean isLevelOpen(int level, int userLevel, long experience) {
-        int expectedLevel = LevelUtils.getLevelFromProgress(experience);
+    public static boolean isLevelOpen(int level, int currLevel, long progress) {
+        int expectedLevel = LevelUtils.getLevelFromProgress(progress);
 
-        return (userLevel + 1) == level && expectedLevel > userLevel;
+        return (currLevel + 1) == level && expectedLevel > currLevel;
     }
 
     public static int getBuffForLevel(int level) {
-        return level * LevelParams.BUFF_PER_LEVEL;
+        return level * LevelConstants.BUFF_PER_LEVEL;
     }
 }
