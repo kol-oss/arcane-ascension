@@ -8,6 +8,7 @@ import com.github.koloss.ascension.controller.menu.Menu;
 import com.github.koloss.ascension.controller.menu.SkillMenu;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
 import com.github.koloss.ascension.controller.modifier.manager.ModifierManager;
+import com.github.koloss.ascension.controller.particle.ParticleManager;
 import com.github.koloss.ascension.controller.sidebar.ProgressSidebar;
 import com.github.koloss.ascension.controller.sidebar.Sidebar;
 import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
@@ -35,6 +36,7 @@ public class SkillListener implements Listener {
     private MenuManager menuManager;
     private SidebarManager sidebarManager;
     private ModifierManager modifierManager;
+    private ParticleManager particleManager;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -75,6 +77,7 @@ public class SkillListener implements Listener {
         skillService.update(skill);
 
         modifierManager.apply(player, type);
+        particleManager.displayRing(player, SkillTypeConverter.toTextColor(type));
     }
 
     @EventHandler
