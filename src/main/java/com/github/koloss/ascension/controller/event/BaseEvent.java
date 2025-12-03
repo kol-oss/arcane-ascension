@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.event;
+package com.github.koloss.ascension.controller.event;
 
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

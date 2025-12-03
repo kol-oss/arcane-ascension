@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.event;
+package com.github.koloss.ascension.controller.event;
 
 import com.github.koloss.ascension.model.SkillType;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 @Getter
 @AllArgsConstructor
-public class IncrementLevelEvent extends BaseEvent {
+public class DisplayProgressSidebarEvent extends BaseEvent {
     private Player player;
     private SkillType skillType;
 }

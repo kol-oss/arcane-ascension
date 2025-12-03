@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.view.sidebar;
+package com.github.koloss.ascension.controller.sidebar;
 
 import com.github.koloss.ascension.utils.SkillTypeUtils;
 import com.github.koloss.ascension.model.Skill;
