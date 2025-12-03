@@ -1,8 +1,8 @@
-package com.github.koloss.ascension.utils;
+package com.github.koloss.ascension.utils.converter;
 
 import java.util.TreeMap;
 
-public final class FormatUtils {
+public final class NumberConverter {
     private final static TreeMap<Integer, String> ROMAN_MAP = new TreeMap<>();
 
     static {
@@ -25,8 +25,11 @@ public final class FormatUtils {
         return ROMAN_MAP.get(largestValue) + toRoman(number - largestValue);
     }
 
-    public static String fromKey(String key) {
-        String value = key.replace("_", " ");
-        return Character.toUpperCase(value.charAt(0)) + value.substring(1);
+    public static double toScale(int number) {
+        return (double) number / 100;
+    }
+
+    public static int toPercent(double scale) {
+        return (int) (scale * 100);
     }
 }

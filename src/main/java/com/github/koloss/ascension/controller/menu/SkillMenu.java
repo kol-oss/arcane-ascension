@@ -13,7 +13,7 @@ import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.utils.LevelUtils;
-import com.github.koloss.ascension.utils.SkillTypeUtils;
+import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
@@ -43,7 +43,7 @@ public class SkillMenu implements Menu {
 
     @Override
     public ChestGui create() {
-        String menuName = SkillTypeUtils.toString(skillType);
+        String menuName = SkillTypeConverter.toString(skillType) + " Skill";
         return new ChestGui(MENU_HEIGHT, menuName);
     }
 
@@ -103,7 +103,7 @@ public class SkillMenu implements Menu {
 
     private void updateHelpersPane(ChestGui gui, StaticPane pane) {
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-        SkillType displayedType = SkillTypeUtils.fromContainer(dataContainer);
+        SkillType displayedType = SkillTypeConverter.fromContainer(dataContainer);
 
         boolean isFollowing = displayedType != null && displayedType == skillType;
 

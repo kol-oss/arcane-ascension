@@ -1,16 +1,13 @@
-package com.github.koloss.ascension.utils;
+package com.github.koloss.ascension.utils.converter;
 
 import com.github.koloss.ascension.constant.KeyConstants;
 import com.github.koloss.ascension.model.SkillType;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.List;
-
-public final class SkillTypeUtils {
+public final class SkillTypeConverter {
     public static SkillType fromContainer(PersistentDataContainer container) {
         String sidebarValue = container.get(KeyConstants.SIDEBAR_KEY, PersistentDataType.STRING);
         return sidebarValue != null ? SkillType.valueOf(sidebarValue) : null;
@@ -61,21 +58,6 @@ public final class SkillTypeUtils {
         }
     }
 
-    public static String toAbilityString(SkillType type) {
-        switch (type) {
-            case COMBAT -> {
-                return "Warrior";
-            }
-            case MINING -> {
-                return "Smith";
-            }
-            case FARMING -> {
-                return "Sower";
-            }
-            default -> throw new IllegalStateException("Unexpected type value: " + type);
-        }
-    }
-
     public static String toDescription(SkillType type) {
         switch (type) {
             case COMBAT -> {
@@ -86,36 +68,6 @@ public final class SkillTypeUtils {
             }
             case FARMING -> {
                 return "Seed or sow and gain health";
-            }
-            default -> throw new IllegalStateException("Unexpected type value: " + type);
-        }
-    }
-
-    public static String toBuffDescription(SkillType type) {
-        switch (type) {
-            case COMBAT -> {
-                return "damage";
-            }
-            case MINING -> {
-                return "luck";
-            }
-            case FARMING -> {
-                return "health";
-            }
-            default -> throw new IllegalStateException("Unexpected type value: " + type);
-        }
-    }
-
-    public static List<Attribute> toAttributes(SkillType type) {
-        switch (type) {
-            case COMBAT -> {
-                return List.of(Attribute.ATTACK_DAMAGE);
-            }
-            case MINING -> {
-                return List.of(Attribute.LUCK);
-            }
-            case FARMING -> {
-                return List.of(Attribute.MAX_HEALTH);
             }
             default -> throw new IllegalStateException("Unexpected type value: " + type);
         }
