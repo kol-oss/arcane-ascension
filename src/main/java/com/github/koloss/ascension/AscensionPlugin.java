@@ -6,8 +6,7 @@ import com.github.koloss.ascension.controller.GeneralListener;
 import com.github.koloss.ascension.controller.ItemListener;
 import com.github.koloss.ascension.controller.SkillListener;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
-import com.github.koloss.ascension.controller.modifier.ModifierManager;
-import com.github.koloss.ascension.controller.modifier.impl.ModifierManagerImpl;
+import com.github.koloss.ascension.controller.modifier.manager.ModifierManager;
 import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.database.impl.DatabaseManagerImpl;
@@ -75,7 +74,7 @@ public final class AscensionPlugin extends JavaPlugin {
         SkillRepository skillRepository = new SkillRepositoryImpl(databaseManager, skillMapper);
         SkillService skillService = new SkillServiceImpl(skillRepository, this);
 
-        ModifierManager modifierManager = new ModifierManagerImpl(skillService);
+        ModifierManager modifierManager = ModifierManager.of(skillService);
         return new SkillListener(skillService, menuManager, sidebarManager, modifierManager);
     }
 

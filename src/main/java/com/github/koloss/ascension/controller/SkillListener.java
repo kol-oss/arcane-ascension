@@ -7,14 +7,14 @@ import com.github.koloss.ascension.controller.event.IncrementLevelEvent;
 import com.github.koloss.ascension.controller.menu.Menu;
 import com.github.koloss.ascension.controller.menu.SkillMenu;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
-import com.github.koloss.ascension.controller.modifier.ModifierManager;
+import com.github.koloss.ascension.controller.modifier.manager.ModifierManager;
 import com.github.koloss.ascension.controller.sidebar.ProgressSidebar;
 import com.github.koloss.ascension.controller.sidebar.Sidebar;
 import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
-import com.github.koloss.ascension.utils.SkillTypeUtils;
+import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,7 +51,7 @@ public class SkillListener implements Listener {
             }
         } else {
             PersistentDataContainer dataContainer = player.getPersistentDataContainer();
-            SkillType type = SkillTypeUtils.fromContainer(dataContainer);
+            SkillType type = SkillTypeConverter.fromContainer(dataContainer);
 
             if (type != null) {
                 Sidebar sidebar = new ProgressSidebar(skillService, player, type);

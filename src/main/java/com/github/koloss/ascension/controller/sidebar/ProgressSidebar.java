@@ -1,6 +1,6 @@
 package com.github.koloss.ascension.controller.sidebar;
 
-import com.github.koloss.ascension.utils.SkillTypeUtils;
+import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
@@ -31,7 +31,7 @@ public class ProgressSidebar implements Sidebar {
     public String getTitle() {
         LegacyComponentSerializer serializer = LegacyComponentSerializer.legacySection();
 
-        NamedTextColor titleColour = SkillTypeUtils.toTextColor(skillType);
+        NamedTextColor titleColour = SkillTypeConverter.toTextColor(skillType);
         Component titleComponent = Component.text(skillType.name())
                 .color(titleColour)
                 .decorate(TextDecoration.BOLD);
