@@ -1,18 +1,20 @@
-package com.github.koloss.ascension.controller.listener;
+package com.github.koloss.ascension.controller;
 
 import com.github.koloss.ascension.controller.event.CloseProgressSidebarEvent;
 import com.github.koloss.ascension.controller.event.DisplayProgressMenuEvent;
 import com.github.koloss.ascension.controller.event.DisplayProgressSidebarEvent;
+import com.github.koloss.ascension.controller.event.IncrementLevelEvent;
+import com.github.koloss.ascension.controller.menu.Menu;
+import com.github.koloss.ascension.controller.menu.SkillMenu;
+import com.github.koloss.ascension.controller.menu.manager.MenuManager;
+import com.github.koloss.ascension.controller.modifier.ModifierManager;
+import com.github.koloss.ascension.controller.sidebar.ProgressSidebar;
+import com.github.koloss.ascension.controller.sidebar.Sidebar;
+import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.utils.SkillTypeUtils;
-import com.github.koloss.ascension.controller.menu.SkillMenu;
-import com.github.koloss.ascension.controller.menu.Menu;
-import com.github.koloss.ascension.controller.menu.manager.MenuManager;
-import com.github.koloss.ascension.controller.sidebar.ProgressSidebar;
-import com.github.koloss.ascension.controller.sidebar.Sidebar;
-import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,15 +34,18 @@ public class SkillListener implements Listener {
 
     private MenuManager menuManager;
     private SidebarManager sidebarManager;
+    private ModifierManager modifierManager;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID userId = player.getUniqueId();
 
+        SkillType[] skillTypes = SkillType.values();
+
         List<Skill> skills = skillService.findAllByUserId(userId);
         if (skills.isEmpty()) {
-            for (SkillType type : SkillType.values()) {
+            for (SkillType type : skillTypes) {
                 Skill created = skillService.create(userId, type);
                 skills.add(created);
             }
@@ -53,6 +58,23 @@ public class SkillListener implements Listener {
                 sidebarManager.display(sidebar, REFRESH_SIDEBAR_INTERVAL);
             }
         }
+
+        for (SkillType type : skillTypes) {
+            modifierManager.apply(player, type);
+        }
+    }
+
+    @EventHandler
+    public void onIncrementLevel(IncrementLevelEvent event) {
+        Player player = event.getPlayer();
+        SkillType type = event.getSkillType();
+
+        Skill skill = skillService.findByUserIdAndType(player.getUniqueId(), type);
+
+        skill.getLevelCount().incrementAndGet();
+        skillService.update(skill);
+
+        modifierManager.apply(player, type);
     }
 
     @EventHandler

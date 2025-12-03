@@ -2,7 +2,7 @@ package com.github.koloss.ascension.controller.icons;
 
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.utils.LevelUtils;
-import com.github.koloss.ascension.utils.NumberUtils;
+import com.github.koloss.ascension.utils.FormatUtils;
 import com.github.koloss.ascension.utils.SkillTypeUtils;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -42,7 +42,7 @@ public class SkillMenuFactory {
     }
 
     public static ItemStack createLevelIcon(SkillType type, Material material, int level) {
-        String levelString = NumberUtils.toRoman(level);
+        String levelString = FormatUtils.toRoman(level);
 
         String title = SkillTypeUtils.toString(type) + " Level " + levelString;
         NamedTextColor titleColor = SkillTypeUtils.toTextColor(type);
