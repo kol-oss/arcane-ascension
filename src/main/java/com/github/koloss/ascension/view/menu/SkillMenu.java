@@ -11,7 +11,8 @@ import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.utils.LevelUtils;
 import com.github.koloss.ascension.utils.SkillTypeUtils;
-import com.github.koloss.ascension.view.icons.IconsFactory;
+import com.github.koloss.ascension.view.icons.MenuFactory;
+import com.github.koloss.ascension.view.icons.SkillMenuFactory;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
@@ -54,7 +55,7 @@ public class SkillMenu implements Menu {
         else
             material = Material.GREEN_WOOL;
 
-        return IconsFactory.createLevelIcon(skillType, material, level);
+        return SkillMenuFactory.createLevelIcon(skillType, material, level);
     }
 
     private void updateLevel(ChestGui gui, StaticPane pane, Skill skill) {
@@ -93,7 +94,7 @@ public class SkillMenu implements Menu {
         StaticPane levelsPane = new StaticPane(0, 0, MENU_WIDTH, MENU_HEIGHT - 1);
 
         long currExp = skill.getProgress();
-        ItemStack skillTypeItem = IconsFactory.createSkillTypeIcon(skillType, currExp);
+        ItemStack skillTypeItem = SkillMenuFactory.createSkillTypeIcon(skillType, currExp);
         levelsPane.addItem(new GuiItem(skillTypeItem), 0, 0);
 
         updateLevelsPane(gui, levelsPane, skill);
@@ -106,7 +107,7 @@ public class SkillMenu implements Menu {
 
         boolean isFollowing = displayedType != null && displayedType == skillType;
 
-        ItemStack followItemStack = IconsFactory.createFollowIcon(isFollowing);
+        ItemStack followItemStack = SkillMenuFactory.createFollowIcon(isFollowing);
         GuiItem followGuiItem = new GuiItem(followItemStack, _ -> {
             Event followEvent;
             if (isFollowing) {
@@ -132,7 +133,7 @@ public class SkillMenu implements Menu {
     private Pane getHelpersPane(ChestGui gui) {
         StaticPane helpersPane = new StaticPane(0, MENU_HEIGHT - 1, MENU_WIDTH, 1);
 
-        ItemStack returnItemStack = IconsFactory.createReturnIcon();
+        ItemStack returnItemStack = MenuFactory.createReturnIcon();
         GuiItem returnGuiItem = new GuiItem(returnItemStack, _ -> {
             DisplayGeneralMenuEvent returnEvent = new DisplayGeneralMenuEvent(player);
             Bukkit.getPluginManager().callEvent(returnEvent);
