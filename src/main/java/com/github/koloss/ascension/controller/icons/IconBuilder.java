@@ -23,9 +23,13 @@ public class IconBuilder {
     }
 
     public static IconBuilder of(String displayName, NamedTextColor color, Material material) {
+        return of(displayName, color, material, 1);
+    }
+
+    public static IconBuilder of(String displayName, NamedTextColor color, Material material, int count) {
         Component title = fromString(displayName, color);
 
-        ItemStack iconStack = new ItemStack(material);
+        ItemStack iconStack = new ItemStack(material, count);
         ItemMeta iconMeta = iconStack.getItemMeta();
         iconMeta.displayName(title);
         iconStack.setItemMeta(iconMeta);

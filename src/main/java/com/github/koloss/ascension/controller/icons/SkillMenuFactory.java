@@ -1,12 +1,18 @@
 package com.github.koloss.ascension.controller.icons;
 
+import com.github.koloss.ascension.controller.modifier.ModifierFactory;
+import com.github.koloss.ascension.controller.modifier.SkillModifier;
 import com.github.koloss.ascension.model.SkillType;
-import com.github.koloss.ascension.utils.LevelUtils;
-import com.github.koloss.ascension.utils.FormatUtils;
-import com.github.koloss.ascension.utils.SkillTypeUtils;
+import com.github.koloss.ascension.utils.converter.AttributeConverter;
+import com.github.koloss.ascension.utils.converter.NumberConverter;
+import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
+import java.util.Map;
 
 public class SkillMenuFactory {
     private static final String NESTED_SYMBOL = "  ";
@@ -24,9 +30,9 @@ public class SkillMenuFactory {
     }
 
     public static ItemStack createSkillTypeIcon(SkillType type, Long progress) {
-        String title = SkillTypeUtils.toString(type);
-        NamedTextColor titleColor = SkillTypeUtils.toTextColor(type);
-        Material titleMaterial = SkillTypeUtils.toMaterial(type);
+        String title = SkillTypeConverter.toString(type);
+        NamedTextColor titleColor = SkillTypeConverter.toTextColor(type);
+        Material titleMaterial = SkillTypeConverter.toMaterial(type);
 
         IconBuilder builder = IconBuilder.of(title, titleColor, titleMaterial);
         if (progress == null) {
@@ -37,31 +43,51 @@ public class SkillMenuFactory {
                 .loreEmpty()
                 .lore("Progress: ", NamedTextColor.GOLD)
                 .loreAppend(progress.toString(), NamedTextColor.AQUA)
-                .lore(SkillTypeUtils.toDescription(type), NamedTextColor.GRAY)
+                .lore(SkillTypeConverter.toDescription(type), NamedTextColor.GRAY)
                 .build();
     }
 
     public static ItemStack createLevelIcon(SkillType type, Material material, int level) {
-        String levelString = FormatUtils.toRoman(level);
+        String levelString = NumberConverter.toRoman(level);
 
-        String title = SkillTypeUtils.toString(type) + " Level " + levelString;
-        NamedTextColor titleColor = SkillTypeUtils.toTextColor(type);
+        String title = SkillTypeConverter.toString(type) + " Level " + levelString;
+        NamedTextColor titleColor = SkillTypeConverter.toTextColor(type);
 
-        String abilityName = SkillTypeUtils.toAbilityString(type);
+        IconBuilder builder = IconBuilder
+                .of(title, titleColor, material, level)
+                .lore("Rewards: ", NamedTextColor.GRAY);
 
-        int oldBuff = LevelUtils.getBuffForLevel(level - 1);
-        int buff = LevelUtils.getBuffForLevel(level);
+        List<SkillModifier> modifiers = ModifierFactory.getModifiers(type);
+        for (SkillModifier modifier : modifiers) {
+            String modifierName = modifier.getName();
+            String modifierLevel = NumberConverter.toRoman(modifier.getLevel(level));
 
-        return IconBuilder
-                .of(title, titleColor, material)
-                .lore("Rewards: ", NamedTextColor.GRAY)
-                .lore(NESTED_SYMBOL + abilityName + " " + levelString, NamedTextColor.GOLD)
-                .lore(NESTED_SYMBOL.repeat(2) + "Deal ")
-                .loreAppend(oldBuff + "➜", NamedTextColor.DARK_GRAY)
-                .loreAppend(buff + "%", NamedTextColor.GREEN)
-                .loreAppend(" more " + SkillTypeUtils.toBuffDescription(type))
-                .loreEmpty()
-                .lore(NESTED_SYMBOL + "+200 mana", NamedTextColor.AQUA)
-                .build();
+            Map<Attribute, Double> prevScales = modifier.getAttributes(level - 1);
+            Map<Attribute, Double> scales = modifier.getAttributes(level);
+
+            boolean hasScales = scales.values()
+                    .stream()
+                    .anyMatch(s -> s > 0);
+
+            if (!hasScales)
+                continue;
+
+            builder = builder.lore(NESTED_SYMBOL + modifierName + " " + modifierLevel, NamedTextColor.GOLD);
+            for (Attribute attribute : scales.keySet()) {
+                double prevScale = prevScales.get(attribute);
+                double scale = scales.get(attribute);
+
+                if (scale == 0)
+                    continue;
+
+                builder = builder
+                        .lore(NESTED_SYMBOL.repeat(2) + "Grants ")
+                        .loreAppend(NumberConverter.toPercent(prevScale) + "➜", NamedTextColor.DARK_GRAY)
+                        .loreAppend(NumberConverter.toPercent(scale) + "%", NamedTextColor.GREEN)
+                        .loreAppend(" " + AttributeConverter.toName(attribute), NamedTextColor.AQUA);
+            }
+        }
+
+        return builder.build();
     }
 }
