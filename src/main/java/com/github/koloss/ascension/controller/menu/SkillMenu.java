@@ -6,13 +6,14 @@ import com.github.koloss.ascension.constant.MenuConstants;
 import com.github.koloss.ascension.controller.event.CloseProgressSidebarEvent;
 import com.github.koloss.ascension.controller.event.DisplayGeneralMenuEvent;
 import com.github.koloss.ascension.controller.event.DisplayProgressSidebarEvent;
+import com.github.koloss.ascension.controller.event.IncrementLevelEvent;
+import com.github.koloss.ascension.controller.icons.MenuFactory;
+import com.github.koloss.ascension.controller.icons.SkillMenuFactory;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.utils.LevelUtils;
 import com.github.koloss.ascension.utils.SkillTypeUtils;
-import com.github.koloss.ascension.controller.icons.MenuFactory;
-import com.github.koloss.ascension.controller.icons.SkillMenuFactory;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
@@ -59,8 +60,7 @@ public class SkillMenu implements Menu {
     }
 
     private void updateLevel(ChestGui gui, StaticPane pane, Skill skill) {
-        skill.getLevelCount().incrementAndGet();
-        skillService.update(skill);
+        Bukkit.getPluginManager().callEvent(new IncrementLevelEvent(player, skillType));
 
         updateLevelsPane(gui, pane, skill);
         gui.update();

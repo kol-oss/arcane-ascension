@@ -2,7 +2,7 @@ package com.github.koloss.ascension.utils;
 
 import java.util.TreeMap;
 
-public final class NumberUtils {
+public final class FormatUtils {
     private final static TreeMap<Integer, String> ROMAN_MAP = new TreeMap<>();
 
     static {
@@ -23,5 +23,10 @@ public final class NumberUtils {
         }
 
         return ROMAN_MAP.get(largestValue) + toRoman(number - largestValue);
+    }
+
+    public static String fromKey(String key) {
+        String value = key.replace("_", " ");
+        return Character.toUpperCase(value.charAt(0)) + value.substring(1);
     }
 }

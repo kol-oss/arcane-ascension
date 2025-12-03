@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.controller.listener;
+package com.github.koloss.ascension.controller;
 
 import com.github.koloss.ascension.service.ItemService;
 import lombok.AllArgsConstructor;
