@@ -1,6 +1,6 @@
 package com.github.koloss.ascension.items.impl;
 
-import com.github.koloss.ascension.event.DisplayGeneralMenuEvent;
+import com.github.koloss.ascension.controller.event.DisplayGeneralMenuEvent;
 import com.github.koloss.ascension.items.ItemHandler;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;

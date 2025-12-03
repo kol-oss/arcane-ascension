@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.view.icons;
+package com.github.koloss.ascension.controller.icons;
 
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

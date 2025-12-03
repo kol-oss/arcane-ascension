@@ -1,6 +1,6 @@
-package com.github.koloss.ascension.view.sidebar.manager;
+package com.github.koloss.ascension.controller.sidebar.manager;
 
-import com.github.koloss.ascension.view.sidebar.Sidebar;
+import com.github.koloss.ascension.controller.sidebar.Sidebar;
 import fr.mrmicky.fastboard.FastBoard;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
