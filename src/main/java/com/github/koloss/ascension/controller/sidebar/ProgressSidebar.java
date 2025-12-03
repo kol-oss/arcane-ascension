@@ -1,5 +1,6 @@
 package com.github.koloss.ascension.controller.sidebar;
 
+import com.github.koloss.ascension.constant.LevelConstants;
 import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
@@ -50,12 +51,14 @@ public class ProgressSidebar implements Sidebar {
         boolean hasNextLevel = skillService.hasOpenedNextLevel(userId, skillType);
         int currLevel = skill.getLevel();
 
+        boolean isMaxLevel = currLevel >= LevelConstants.MAX_LEVEL;
+
         return List.of(
                 "§7=============",
                 "§6Progress: §b" + currProgress,
-                "§6Next level: §b" + nextLevelProgress,
+                !isMaxLevel ? "§6Next level: §b" + nextLevelProgress : "",
                 "",
-                "§6Level: §b" + currLevel + (hasNextLevel ? " §e(!)" : ""),
+                "§6Level: §b" + currLevel + (hasNextLevel && !isMaxLevel ? " §e(!)" : ""),
                 "§7============="
         );
     }
