@@ -4,8 +4,11 @@ import com.github.koloss.ascension.constant.KeyConstants;
 import com.github.koloss.ascension.model.SkillType;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.List;
 
 public final class SkillTypeUtils {
     public static SkillType fromContainer(PersistentDataContainer container) {
@@ -98,6 +101,21 @@ public final class SkillTypeUtils {
             }
             case FARMING -> {
                 return "health";
+            }
+            default -> throw new IllegalStateException("Unexpected type value: " + type);
+        }
+    }
+
+    public static List<Attribute> toAttributes(SkillType type) {
+        switch (type) {
+            case COMBAT -> {
+                return List.of(Attribute.ATTACK_DAMAGE);
+            }
+            case MINING -> {
+                return List.of(Attribute.LUCK);
+            }
+            case FARMING -> {
+                return List.of(Attribute.MAX_HEALTH);
             }
             default -> throw new IllegalStateException("Unexpected type value: " + type);
         }

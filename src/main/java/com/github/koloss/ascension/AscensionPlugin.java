@@ -2,12 +2,16 @@ package com.github.koloss.ascension;
 
 import com.github.koloss.ascension.config.ConfigurationFactory;
 import com.github.koloss.ascension.config.DatabaseConfiguration;
+import com.github.koloss.ascension.controller.GeneralListener;
+import com.github.koloss.ascension.controller.ItemListener;
+import com.github.koloss.ascension.controller.SkillListener;
+import com.github.koloss.ascension.controller.menu.manager.MenuManager;
+import com.github.koloss.ascension.controller.modifier.ModifierManager;
+import com.github.koloss.ascension.controller.modifier.impl.ModifierManagerImpl;
+import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.database.impl.DatabaseManagerImpl;
 import com.github.koloss.ascension.items.ItemManager;
-import com.github.koloss.ascension.controller.listener.GeneralListener;
-import com.github.koloss.ascension.controller.listener.ItemListener;
-import com.github.koloss.ascension.controller.listener.SkillListener;
 import com.github.koloss.ascension.mapper.ModelMapper;
 import com.github.koloss.ascension.mapper.impl.SkillMapperImpl;
 import com.github.koloss.ascension.model.Skill;
@@ -17,8 +21,6 @@ import com.github.koloss.ascension.service.ItemService;
 import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.service.impl.ItemServiceImpl;
 import com.github.koloss.ascension.service.impl.SkillServiceImpl;
-import com.github.koloss.ascension.controller.menu.manager.MenuManager;
-import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
@@ -32,6 +34,7 @@ public final class AscensionPlugin extends JavaPlugin {
 
     private final MenuManager menuManager = MenuManager.of(this);
     private final SidebarManager sidebarManager = SidebarManager.of(this);
+
     private DatabaseManager databaseManager;
 
     @Override
@@ -72,7 +75,8 @@ public final class AscensionPlugin extends JavaPlugin {
         SkillRepository skillRepository = new SkillRepositoryImpl(databaseManager, skillMapper);
         SkillService skillService = new SkillServiceImpl(skillRepository, this);
 
-        return new SkillListener(skillService, menuManager, sidebarManager);
+        ModifierManager modifierManager = new ModifierManagerImpl(skillService);
+        return new SkillListener(skillService, menuManager, sidebarManager, modifierManager);
     }
 
     private Listener createItemListener() {
