@@ -3,7 +3,8 @@ package com.github.koloss.ascension.view.menu;
 import com.github.koloss.ascension.event.BaseEvent;
 import com.github.koloss.ascension.event.DisplayProgressMenuEvent;
 import com.github.koloss.ascension.model.SkillType;
-import com.github.koloss.ascension.view.icons.IconsFactory;
+import com.github.koloss.ascension.view.icons.GeneralMenuFactory;
+import com.github.koloss.ascension.view.icons.SkillMenuFactory;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
@@ -27,7 +28,7 @@ public class GeneralMenu implements Menu {
 
     private Pane getTopPane() {
         StaticPane topPane = new StaticPane(0, 1, MENU_WIDTH, 1);
-        ItemStack spellsIcon = IconsFactory.createSpellsListIcon();
+        ItemStack spellsIcon = GeneralMenuFactory.createSpellsListIcon();
 
         topPane.addItem(new GuiItem(spellsIcon), MENU_WIDTH / 2, 0);
         return topPane;
@@ -38,7 +39,7 @@ public class GeneralMenu implements Menu {
 
         int index = 3;
         for (SkillType type : SkillType.values()) {
-            ItemStack itemStack = IconsFactory.createSkillTypeIcon(type, null);
+            ItemStack itemStack = SkillMenuFactory.createSkillTypeIcon(type, null);
 
             centerPane.addItem(new GuiItem(itemStack, event -> {
                 Player player = (Player) event.getWhoClicked();
@@ -53,7 +54,7 @@ public class GeneralMenu implements Menu {
 
     private Pane getBottomPane() {
         StaticPane bottomPane = new StaticPane(0, 3, MENU_WIDTH, 1);
-        ItemStack villagesIcon = IconsFactory.createVillagesListIcon();
+        ItemStack villagesIcon = GeneralMenuFactory.createVillagesListIcon();
 
         bottomPane.addItem(new GuiItem(villagesIcon), MENU_WIDTH / 2, 0);
         return bottomPane;

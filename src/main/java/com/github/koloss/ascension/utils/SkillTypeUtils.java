@@ -87,4 +87,19 @@ public final class SkillTypeUtils {
             default -> throw new IllegalStateException("Unexpected type value: " + type);
         }
     }
+
+    public static String toBuffDescription(SkillType type) {
+        switch (type) {
+            case COMBAT -> {
+                return "damage";
+            }
+            case MINING -> {
+                return "luck";
+            }
+            case FARMING -> {
+                return "health";
+            }
+            default -> throw new IllegalStateException("Unexpected type value: " + type);
+        }
+    }
 }
