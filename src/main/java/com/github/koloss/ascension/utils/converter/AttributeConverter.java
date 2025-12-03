@@ -12,7 +12,12 @@ public final class AttributeConverter {
             Attribute.ATTACK_KNOCKBACK, "Knockback",
             Attribute.ATTACK_SPEED, "Attack Speed",
             Attribute.KNOCKBACK_RESISTANCE, "Knockback Resistance",
-            Attribute.ARMOR_TOUGHNESS, "Armor Toughness"
+            Attribute.ARMOR_TOUGHNESS, "Armor Toughness",
+            Attribute.MINING_EFFICIENCY, "Mining Speed",
+            Attribute.BLOCK_INTERACTION_RANGE, "Interaction Range",
+            Attribute.MAX_HEALTH, "Health",
+            Attribute.MOVEMENT_SPEED, "Speed",
+            Attribute.LUCK, "Fortune"
     );
 
     public static String toName(Attribute attribute) {
