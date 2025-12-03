@@ -13,7 +13,7 @@ public class MinerModifier extends BaseModifier {
 
     @Override
     protected int getMinLevel() {
-        return 0;
+        return 1;
     }
 
     // each level +2% luck (open after level 15)

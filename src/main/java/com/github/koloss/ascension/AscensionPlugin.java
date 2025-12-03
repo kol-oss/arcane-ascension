@@ -7,6 +7,7 @@ import com.github.koloss.ascension.controller.ItemListener;
 import com.github.koloss.ascension.controller.SkillListener;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
 import com.github.koloss.ascension.controller.modifier.manager.ModifierManager;
+import com.github.koloss.ascension.controller.particle.ParticleManager;
 import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.database.impl.DatabaseManagerImpl;
@@ -33,6 +34,7 @@ public final class AscensionPlugin extends JavaPlugin {
 
     private final MenuManager menuManager = MenuManager.of(this);
     private final SidebarManager sidebarManager = SidebarManager.of(this);
+    private final ParticleManager particleManager = ParticleManager.of(this);
 
     private DatabaseManager databaseManager;
 
@@ -75,7 +77,7 @@ public final class AscensionPlugin extends JavaPlugin {
         SkillService skillService = new SkillServiceImpl(skillRepository, this);
 
         ModifierManager modifierManager = ModifierManager.of(skillService);
-        return new SkillListener(skillService, menuManager, sidebarManager, modifierManager);
+        return new SkillListener(skillService, menuManager, sidebarManager, modifierManager, particleManager);
     }
 
     private Listener createItemListener() {
