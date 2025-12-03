@@ -1,10 +1,10 @@
-package com.github.koloss.ascension.view.menu;
+package com.github.koloss.ascension.controller.menu;
 
-import com.github.koloss.ascension.event.BaseEvent;
-import com.github.koloss.ascension.event.DisplayProgressMenuEvent;
+import com.github.koloss.ascension.controller.event.BaseEvent;
+import com.github.koloss.ascension.controller.event.DisplayProgressMenuEvent;
 import com.github.koloss.ascension.model.SkillType;
-import com.github.koloss.ascension.view.icons.GeneralMenuFactory;
-import com.github.koloss.ascension.view.icons.SkillMenuFactory;
+import com.github.koloss.ascension.controller.icons.GeneralMenuFactory;
+import com.github.koloss.ascension.controller.icons.SkillMenuFactory;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;

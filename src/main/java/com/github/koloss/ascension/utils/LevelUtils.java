@@ -2,7 +2,7 @@ package com.github.koloss.ascension.utils;
 
 import com.github.koloss.ascension.constant.LevelConstants;
 
-public class LevelUtils {
+public final class LevelUtils {
     public static long getProgressOfNextLevel(long progress) {
         return (long) getLevelFromProgress(progress) * LevelConstants.XP_PR_LEVEL + LevelConstants.XP_PR_LEVEL;
     }

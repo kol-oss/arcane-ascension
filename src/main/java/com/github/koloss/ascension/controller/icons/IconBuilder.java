@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.view.icons;
+package com.github.koloss.ascension.controller.icons;
 
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;

@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.event;
+package com.github.koloss.ascension.controller.event;
 
 import com.github.koloss.ascension.model.SkillType;
 import lombok.AllArgsConstructor;

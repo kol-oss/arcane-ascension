@@ -1,9 +1,9 @@
-package com.github.koloss.ascension.listener;
+package com.github.koloss.ascension.controller.listener;
 
-import com.github.koloss.ascension.event.DisplayGeneralMenuEvent;
-import com.github.koloss.ascension.view.menu.GeneralMenu;
-import com.github.koloss.ascension.view.menu.Menu;
-import com.github.koloss.ascension.view.menu.manager.MenuManager;
+import com.github.koloss.ascension.controller.event.DisplayGeneralMenuEvent;
+import com.github.koloss.ascension.controller.menu.GeneralMenu;
+import com.github.koloss.ascension.controller.menu.Menu;
+import com.github.koloss.ascension.controller.menu.manager.MenuManager;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

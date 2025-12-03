@@ -1,6 +1,6 @@
-package com.github.koloss.ascension.view.menu.manager;
+package com.github.koloss.ascension.controller.menu.manager;
 
-import com.github.koloss.ascension.view.menu.Menu;
+import com.github.koloss.ascension.controller.menu.Menu;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;

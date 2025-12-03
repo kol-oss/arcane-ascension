@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.view.menu;
+package com.github.koloss.ascension.controller.menu;
 
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;

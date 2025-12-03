@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.view.icons;
+package com.github.koloss.ascension.controller.icons;
 
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.utils.LevelUtils;

@@ -8,7 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-public class InventoryUtils {
+public final class InventoryUtils {
     public static boolean contains(Inventory inventory, AscensionMaterial material) {
         for (ItemStack item : inventory.getContents()) {
             if (item == null || !item.hasItemMeta()) {

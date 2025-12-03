@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.event;
+package com.github.koloss.ascension.controller.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

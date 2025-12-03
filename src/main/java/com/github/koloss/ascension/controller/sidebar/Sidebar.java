@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.view.sidebar;
+package com.github.koloss.ascension.controller.sidebar;
 
 import org.bukkit.entity.Player;
 
