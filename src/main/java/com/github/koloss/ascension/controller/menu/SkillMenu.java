@@ -7,6 +7,7 @@ import com.github.koloss.ascension.controller.event.CloseProgressSidebarEvent;
 import com.github.koloss.ascension.controller.event.DisplayGeneralMenuEvent;
 import com.github.koloss.ascension.controller.event.DisplayProgressSidebarEvent;
 import com.github.koloss.ascension.controller.event.IncrementLevelEvent;
+import com.github.koloss.ascension.controller.icons.GeneralMenuFactory;
 import com.github.koloss.ascension.controller.icons.MenuFactory;
 import com.github.koloss.ascension.controller.icons.SkillMenuFactory;
 import com.github.koloss.ascension.model.Skill;
@@ -93,8 +94,7 @@ public class SkillMenu implements Menu {
 
         StaticPane levelsPane = new StaticPane(0, 0, MENU_WIDTH, MENU_HEIGHT - 1);
 
-        long currExp = skill.getProgress();
-        ItemStack skillTypeItem = SkillMenuFactory.createSkillTypeIcon(skillType, currExp);
+        ItemStack skillTypeItem = GeneralMenuFactory.createSkillTypeIcon(skill);
         levelsPane.addItem(new GuiItem(skillTypeItem), 0, 0);
 
         updateLevelsPane(gui, levelsPane, skill);
