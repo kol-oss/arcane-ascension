@@ -19,7 +19,6 @@ public class SkillMenuFactory {
         NamedTextColor titleColor = isDisplayed ? NamedTextColor.RED : NamedTextColor.GREEN;
 
         Material titleMaterial = isDisplayed ? Material.ENDER_EYE : Material.COMPASS;
-
         Component loreComponent = Component.text((isDisplayed ? "Hide" : "Display") + " this skill in sidebar", NamedTextColor.GRAY);
 
         return IconBuilder
@@ -46,10 +45,12 @@ public class SkillMenuFactory {
             if (modifierContent == null)
                 continue;
 
-            builder.lore(Component.empty()
-                    .appendNewline()
-                    .append(modifierContent)
-            );
+            Component component = MessageUtils.formatToLore(modifierContent);
+            List<Component> rows = component.children();
+
+            builder.lore(component.children(List.of()));
+            for (Component child : rows)
+                builder.lore(child);
         }
 
         return builder.build();

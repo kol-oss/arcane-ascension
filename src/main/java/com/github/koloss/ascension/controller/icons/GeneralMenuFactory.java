@@ -61,12 +61,15 @@ public class GeneralMenuFactory {
 
             List<SkillModifier> modifiers = ModifierFactory.getModifiers(type);
             for (SkillModifier modifier : modifiers) {
-                Component modifierContent = MessageUtils.getModifierContent(modifier, skill.getLevel(), " ");
+                Component modifierContent = MessageUtils.getModifierContent(modifier, skill.getLevel());
                 if (modifierContent == null)
                     continue;
 
                 Component component = MessageUtils.formatToLore(modifierContent);
-                for (Component child : component.children())
+                List<Component> rows = component.children();
+
+                builder.lore(component.children(List.of()));
+                for (Component child : rows)
                     builder.lore(child);
             }
         }
