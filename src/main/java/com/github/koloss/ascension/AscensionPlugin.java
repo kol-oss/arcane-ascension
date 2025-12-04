@@ -38,6 +38,8 @@ public final class AscensionPlugin extends JavaPlugin {
 
     private DatabaseManager databaseManager;
 
+    private SkillService skillService;
+
     @Override
     public void onEnable() {
         this.databaseManager = createDatabaseManager();
@@ -51,7 +53,7 @@ public final class AscensionPlugin extends JavaPlugin {
         manager.registerEvents(skillListener, this);
 
         // General listener
-        GeneralListener generalListener = new GeneralListener(menuManager);
+        GeneralListener generalListener = new GeneralListener(menuManager, skillService);
         manager.registerEvents(generalListener, this);
     }
 
@@ -74,7 +76,7 @@ public final class AscensionPlugin extends JavaPlugin {
         ModelMapper<Skill> skillMapper = new SkillMapperImpl();
 
         SkillRepository skillRepository = new SkillRepositoryImpl(databaseManager, skillMapper);
-        SkillService skillService = new SkillServiceImpl(skillRepository, this);
+        this.skillService = new SkillServiceImpl(skillRepository, this);
 
         ModifierManager modifierManager = ModifierManager.of(skillService);
         return new SkillListener(skillService, menuManager, sidebarManager, modifierManager, particleManager);

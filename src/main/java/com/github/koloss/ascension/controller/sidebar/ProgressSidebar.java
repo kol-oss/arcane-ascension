@@ -52,7 +52,6 @@ public class ProgressSidebar implements Sidebar {
         int currLevel = skill.getLevel();
 
         boolean isMaxLevel = currLevel >= LevelConstants.MAX_LEVEL;
-
         return List.of(
                 "§7=============",
                 "§6Progress: §b" + currProgress,
