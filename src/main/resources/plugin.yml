@@ -9,3 +9,6 @@ commands:
   skills:
     description: Displays current modifiers
     usage: /skills
+  skill:
+    description: Display skill modifiers
+    usage: /skill <combat|mining|farming>

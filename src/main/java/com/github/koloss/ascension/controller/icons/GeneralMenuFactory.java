@@ -55,7 +55,7 @@ public class GeneralMenuFactory {
             builder
                     .lore(Component.empty())
                     .lore(MessageUtils.getProgressLevelString(nextLevel, progress))
-                    .lore(MessageUtils.getProgressBar(progress))
+                    .lore(MessageUtils.getProgressBar(progress, type))
                     .lore(Component.empty())
                     .lore(Component.text("Rewards of Level " + NumberConverter.toRoman(nextLevel) + ":", NamedTextColor.GRAY));
 
