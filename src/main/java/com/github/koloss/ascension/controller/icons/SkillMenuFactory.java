@@ -21,24 +21,6 @@ public class SkillMenuFactory {
                 .build();
     }
 
-    public static ItemStack createSkillTypeIcon(SkillType type, Long progress) {
-        String title = SkillTypeConverter.toString(type);
-        NamedTextColor titleColor = SkillTypeConverter.toTextColor(type);
-        Material titleMaterial = SkillTypeConverter.toMaterial(type);
-
-        IconBuilder builder = IconBuilder.of(title, titleColor, titleMaterial);
-        if (progress == null) {
-            return builder.build();
-        }
-
-        return builder
-                .loreEmpty()
-                .lore("Progress: ", NamedTextColor.GOLD)
-                .loreAppend(progress.toString(), NamedTextColor.AQUA)
-                .lore(SkillTypeConverter.toDescription(type), NamedTextColor.GRAY)
-                .build();
-    }
-
     public static ItemStack createLevelIcon(SkillType type, Material material, int level) {
         String levelString = NumberConverter.toRoman(level);
 
