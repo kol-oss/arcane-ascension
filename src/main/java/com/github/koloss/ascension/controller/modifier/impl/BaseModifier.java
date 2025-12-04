@@ -10,7 +10,7 @@ public abstract class BaseModifier implements SkillModifier {
     protected abstract int getMinLevel();
 
     @Override
-    public int getLevel(int level) {
+    public int getModifiedLevel(int level) {
         return level - getMinLevel() + 1;
     }
 
