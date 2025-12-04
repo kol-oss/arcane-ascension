@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 public final class MessageUtils {
-    private static final String PREFIX = "  ";
+    private static final String PREFIX = " ";
     private static final Set<String> NEW_LINE_CHARACTERS = Set.of("\r", "\n", "\r\n");
 
     private static final String DELIMITER_SYMBOL = "=";
@@ -50,6 +50,13 @@ public final class MessageUtils {
         children.replaceAll(MessageUtils::formatToLore);
 
         return text.children(children);
+    }
+
+    private static Component updateChildren(Component parent, List<Component> children) {
+        List<Component> newChildren = new ArrayList<>(parent.children());
+        newChildren.addAll(children);
+
+        return parent.children(newChildren);
     }
 
     public static Component getDelimiterLine(String content, NamedTextColor contentColor) {
@@ -120,21 +127,21 @@ public final class MessageUtils {
 
         resultComponent = resultComponent
                 .appendNewline()
-                .append(Component.text("Modifiers:", NamedTextColor.GREEN));
+                .append(Component.text("Modifiers:", NamedTextColor.GREEN))
+                .appendNewline();
 
         // Modifiers
         List<SkillModifier> modifiers = ModifierFactory.getModifiers(skillType);
+        List<Component> components = new ArrayList<>();
         for (SkillModifier modifier : modifiers) {
             Component modifierContent = getModifierContent(modifier, skill.getLevel(), PREFIX);
             if (modifierContent == null)
                 continue;
 
-            resultComponent = resultComponent
-                    .appendNewline()
-                    .append(modifierContent);
+            components.add(modifierContent);
         }
 
-        return resultComponent
+        return updateChildren(resultComponent, components)
                 .appendNewline()
                 .append(closeDelimiter);
     }
@@ -169,7 +176,8 @@ public final class MessageUtils {
         NamedTextColor nameColor = NamedTextColor.GOLD;
         Component resultComponent = Component
                 .text(prefix + name + " " + romanLevel)
-                .color(TextColor.color(nameColor.asHSV()));
+                .color(TextColor.color(nameColor.asHSV()))
+                .appendNewline();
 
         // Grants component: (ex.) Grants 4➜6% Health
         List<Component> grantComponents = new ArrayList<>();
@@ -197,13 +205,6 @@ public final class MessageUtils {
             grantComponents.add(grantsComponent);
         }
 
-        if (!grantComponents.isEmpty()) {
-            List<Component> children = new ArrayList<>(resultComponent.children());
-            children.addAll(grantComponents);
-
-            resultComponent = resultComponent.children(children);
-        }
-
-        return resultComponent;
+        return resultComponent.append(grantComponents);
     }
 }
