@@ -7,7 +7,7 @@ import java.util.Map;
 public interface SkillModifier {
     String getName();
 
-    int getLevel(int level);
+    int getModifiedLevel(int level);
 
     Map<Attribute, Double> getAttributes(int level);
 }
