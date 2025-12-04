@@ -7,6 +7,7 @@ import com.github.koloss.ascension.controller.ItemListener;
 import com.github.koloss.ascension.controller.ProgressListener;
 import com.github.koloss.ascension.controller.SkillListener;
 import com.github.koloss.ascension.controller.command.HelpCommand;
+import com.github.koloss.ascension.controller.command.SkillCommand;
 import com.github.koloss.ascension.controller.command.SkillsCommand;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
 import com.github.koloss.ascension.controller.modifier.manager.ModifierManager;
@@ -64,6 +65,7 @@ public final class AscensionPlugin extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("help")).setExecutor(new HelpCommand());
         Objects.requireNonNull(getCommand("skills")).setExecutor(new SkillsCommand(skillService));
+        Objects.requireNonNull(getCommand("skill")).setExecutor(new SkillCommand(skillService));
     }
 
     private DatabaseManager createDatabaseManager() {
