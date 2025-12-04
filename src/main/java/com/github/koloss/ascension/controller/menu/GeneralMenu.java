@@ -2,24 +2,31 @@ package com.github.koloss.ascension.controller.menu;
 
 import com.github.koloss.ascension.controller.event.BaseEvent;
 import com.github.koloss.ascension.controller.event.DisplayProgressMenuEvent;
-import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.controller.icons.GeneralMenuFactory;
-import com.github.koloss.ascension.controller.icons.SkillMenuFactory;
+import com.github.koloss.ascension.model.Skill;
+import com.github.koloss.ascension.model.SkillType;
+import com.github.koloss.ascension.service.SkillService;
 import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class GeneralMenu implements Menu {
     private static final String MENU_NAME = "Tome of Ascension";
 
     private static final int MENU_WIDTH = 9;
     private static final int MENU_HEIGHT = 5;
+
+    private SkillService skillService;
+
+    private Player player;
 
     @Override
     public ChestGui create() {
@@ -39,7 +46,8 @@ public class GeneralMenu implements Menu {
 
         int index = 3;
         for (SkillType type : SkillType.values()) {
-            ItemStack itemStack = SkillMenuFactory.createSkillTypeIcon(type, null);
+            Skill skill = skillService.findByUserIdAndType(player.getUniqueId(), type);
+            ItemStack itemStack = GeneralMenuFactory.createSkillTypeIcon(skill);
 
             centerPane.addItem(new GuiItem(itemStack, event -> {
                 Player player = (Player) event.getWhoClicked();
