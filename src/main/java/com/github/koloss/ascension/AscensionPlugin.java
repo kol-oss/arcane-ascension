@@ -4,6 +4,7 @@ import com.github.koloss.ascension.config.ConfigurationFactory;
 import com.github.koloss.ascension.config.DatabaseConfiguration;
 import com.github.koloss.ascension.controller.GeneralListener;
 import com.github.koloss.ascension.controller.ItemListener;
+import com.github.koloss.ascension.controller.ProgressListener;
 import com.github.koloss.ascension.controller.SkillListener;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
 import com.github.koloss.ascension.controller.modifier.manager.ModifierManager;
@@ -51,6 +52,10 @@ public final class AscensionPlugin extends JavaPlugin {
         // Skill listener
         Listener skillListener = createSkillListener();
         manager.registerEvents(skillListener, this);
+
+        // Progress listener
+        Listener progressListener = new ProgressListener(skillService);
+        manager.registerEvents(progressListener, this);
 
         // General listener
         GeneralListener generalListener = new GeneralListener(menuManager, skillService);
