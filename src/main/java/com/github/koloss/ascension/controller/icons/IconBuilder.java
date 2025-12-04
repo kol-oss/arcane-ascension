@@ -38,60 +38,14 @@ public class IconBuilder {
         return new IconBuilder(iconStack);
     }
 
-    public IconBuilder loreEmpty() {
-        return lore(null);
-    }
-
-    public IconBuilder lore(String content) {
-        return lore(content, NamedTextColor.WHITE);
-    }
-
-    public IconBuilder lore(String content, NamedTextColor color, TextDecoration... decorations) {
-        Component newComponent;
-
-        if (content != null && !content.isEmpty())
-            newComponent = Component
-                    .text(content, color)
-                    .decoration(TextDecoration.ITALIC, false)
-                    .decorate(decorations);
-        else
-            newComponent = Component.empty();
+    public IconBuilder lore(Component component) {
+        component = component.decoration(TextDecoration.ITALIC, false);
 
         List<Component> lore = itemStack.lore();
         if (lore == null)
             lore = new ArrayList<>();
 
-        lore.add(newComponent);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.lore(lore);
-
-        itemStack.setItemMeta(itemMeta);
-        return this;
-    }
-
-    public IconBuilder loreAppend(String content, TextDecoration... decorations) {
-        return loreAppend(content, NamedTextColor.WHITE, decorations);
-    }
-
-    public IconBuilder loreAppend(String content, NamedTextColor color, TextDecoration... decorations) {
-        if (content == null)
-            return this;
-
-        Component newComponent = Component
-                .text(content, color)
-                .decorate(decorations);
-
-        List<Component> lore = itemStack.lore();
-        if (lore == null) {
-            lore = new ArrayList<>();
-            lore.add(newComponent);
-        } else {
-            int lastIndex = lore.size() - 1;
-
-            Component prevComponent = lore.get(lastIndex);
-            lore.set(lastIndex, prevComponent.append(newComponent));
-        }
+        lore.add(component);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.lore(lore);

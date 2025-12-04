@@ -1,8 +1,12 @@
 package com.github.koloss.ascension.items;
 
-import com.github.koloss.ascension.model.AscensionMaterial;
 import com.github.koloss.ascension.constant.KeyConstants;
 import com.github.koloss.ascension.items.impl.TomeOfAscension;
+import com.github.koloss.ascension.model.AscensionMaterial;
+import com.github.koloss.ascension.utils.InventoryUtils;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -32,8 +36,16 @@ public class ItemManager {
         return manager;
     }
 
-    public ItemHandler getHandler(AscensionMaterial material) {
-        return itemByMaterial.get(material);
+    public ItemStack getHelpItem(Player player) {
+        Inventory inventory = player.getInventory();
+        AscensionMaterial material = AscensionMaterial.TOME_OF_ASCENSION;
+
+        boolean contains = InventoryUtils.contains(inventory, material);
+        if (contains) {
+            return null;
+        }
+
+        return create(material);
     }
 
     public ItemStack create(AscensionMaterial material) {
@@ -50,5 +62,20 @@ public class ItemManager {
 
         created.setItemMeta(createdMeta);
         return created;
+    }
+
+    public void process(PlayerInteractEvent event, ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+
+        String materialName = container.get(KeyConstants.MATERIAL_KEY, PersistentDataType.STRING);
+        if (materialName == null)
+            return;
+
+        AscensionMaterial material = AscensionMaterial.valueOf(materialName);
+
+        ItemHandler item = itemByMaterial.get(material);
+        if (item != null)
+            item.onRightClick(event);
     }
 }

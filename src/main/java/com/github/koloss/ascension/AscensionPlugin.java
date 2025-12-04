@@ -6,6 +6,8 @@ import com.github.koloss.ascension.controller.GeneralListener;
 import com.github.koloss.ascension.controller.ItemListener;
 import com.github.koloss.ascension.controller.ProgressListener;
 import com.github.koloss.ascension.controller.SkillListener;
+import com.github.koloss.ascension.controller.command.HelpCommand;
+import com.github.koloss.ascension.controller.command.SkillsCommand;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
 import com.github.koloss.ascension.controller.modifier.manager.ModifierManager;
 import com.github.koloss.ascension.controller.particle.ParticleManager;
@@ -18,9 +20,7 @@ import com.github.koloss.ascension.mapper.impl.SkillMapperImpl;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.repository.SkillRepository;
 import com.github.koloss.ascension.repository.impl.SkillRepositoryImpl;
-import com.github.koloss.ascension.service.ItemService;
 import com.github.koloss.ascension.service.SkillService;
-import com.github.koloss.ascension.service.impl.ItemServiceImpl;
 import com.github.koloss.ascension.service.impl.SkillServiceImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,6 +29,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Objects;
 
 public final class AscensionPlugin extends JavaPlugin {
     private static final String DB_CONFIG_FILE = "database.yml";
@@ -60,6 +61,9 @@ public final class AscensionPlugin extends JavaPlugin {
         // General listener
         GeneralListener generalListener = new GeneralListener(menuManager, skillService);
         manager.registerEvents(generalListener, this);
+
+        Objects.requireNonNull(getCommand("help")).setExecutor(new HelpCommand());
+        Objects.requireNonNull(getCommand("skills")).setExecutor(new SkillsCommand(skillService));
     }
 
     private DatabaseManager createDatabaseManager() {
@@ -90,8 +94,7 @@ public final class AscensionPlugin extends JavaPlugin {
     private Listener createItemListener() {
         ItemManager itemManager = ItemManager.of(this);
 
-        ItemService itemService = new ItemServiceImpl(this, itemManager);
-        return new ItemListener(itemService);
+        return new ItemListener(itemManager);
     }
 
     @Override
