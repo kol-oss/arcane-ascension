@@ -1,7 +1,7 @@
-package com.github.koloss.ascension.items;
+package com.github.koloss.ascension.controller.items;
 
 import com.github.koloss.ascension.constant.KeyConstants;
-import com.github.koloss.ascension.items.impl.TomeOfAscension;
+import com.github.koloss.ascension.controller.items.impl.TomeOfAscension;
 import com.github.koloss.ascension.model.AscensionMaterial;
 import com.github.koloss.ascension.utils.InventoryUtils;
 import org.bukkit.entity.Player;

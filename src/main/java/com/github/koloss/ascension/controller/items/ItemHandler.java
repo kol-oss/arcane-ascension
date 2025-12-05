@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.items;
+package com.github.koloss.ascension.controller.items;
 
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;

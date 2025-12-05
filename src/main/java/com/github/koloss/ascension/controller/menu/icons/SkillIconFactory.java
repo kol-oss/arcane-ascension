@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.controller.icons;
+package com.github.koloss.ascension.controller.menu.icons;
 
 import com.github.koloss.ascension.controller.modifier.ModifierFactory;
 import com.github.koloss.ascension.controller.modifier.SkillModifier;
@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class SkillMenuFactory {
+public class SkillIconFactory {
     public static ItemStack createFollowIcon(boolean isDisplayed) {
         String title = isDisplayed ? "Stop following" : "Follow";
         NamedTextColor titleColor = isDisplayed ? NamedTextColor.RED : NamedTextColor.GREEN;

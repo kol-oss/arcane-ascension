@@ -1,7 +1,7 @@
-package com.github.koloss.ascension.items.impl;
+package com.github.koloss.ascension.controller.items.impl;
 
 import com.github.koloss.ascension.controller.event.DisplayGeneralMenuEvent;
-import com.github.koloss.ascension.items.ItemHandler;
+import com.github.koloss.ascension.controller.items.ItemHandler;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -24,7 +24,7 @@ public class TomeOfAscension implements ItemHandler {
 
         Component title = Component.text("Tome of Ascension")
                 .color(NamedTextColor.BLUE)
-                .decorate(TextDecoration.BOLD);
+                .decoration(TextDecoration.ITALIC, false);
 
         BookMeta meta = (BookMeta) book.getItemMeta();
         meta.displayName(title);

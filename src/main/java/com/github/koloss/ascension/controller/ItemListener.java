@@ -1,7 +1,7 @@
 package com.github.koloss.ascension.controller;
 
 import com.github.koloss.ascension.controller.event.HelpEvent;
-import com.github.koloss.ascension.items.ItemManager;
+import com.github.koloss.ascension.controller.items.ItemManager;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

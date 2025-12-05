@@ -7,9 +7,8 @@ import com.github.koloss.ascension.controller.event.CloseProgressSidebarEvent;
 import com.github.koloss.ascension.controller.event.DisplayGeneralMenuEvent;
 import com.github.koloss.ascension.controller.event.DisplayProgressSidebarEvent;
 import com.github.koloss.ascension.controller.event.IncrementLevelEvent;
-import com.github.koloss.ascension.controller.icons.GeneralMenuFactory;
-import com.github.koloss.ascension.controller.icons.MenuFactory;
-import com.github.koloss.ascension.controller.icons.SkillMenuFactory;
+import com.github.koloss.ascension.controller.menu.icons.CommonIconFactory;
+import com.github.koloss.ascension.controller.menu.icons.SkillIconFactory;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
@@ -57,7 +56,7 @@ public class SkillMenu implements Menu {
         else
             material = Material.GREEN_WOOL;
 
-        return SkillMenuFactory.createLevelIcon(skillType, material, level);
+        return SkillIconFactory.createLevelIcon(skillType, material, level);
     }
 
     private void updateLevel(ChestGui gui, StaticPane pane, Skill skill) {
@@ -94,7 +93,7 @@ public class SkillMenu implements Menu {
 
         StaticPane levelsPane = new StaticPane(0, 0, MENU_WIDTH, MENU_HEIGHT - 1);
 
-        ItemStack skillTypeItem = GeneralMenuFactory.createSkillTypeIcon(skill);
+        ItemStack skillTypeItem = CommonIconFactory.createSkillTypeIcon(skill);
         levelsPane.addItem(new GuiItem(skillTypeItem), 0, 0);
 
         updateLevelsPane(gui, levelsPane, skill);
@@ -107,7 +106,7 @@ public class SkillMenu implements Menu {
 
         boolean isFollowing = displayedType != null && displayedType == skillType;
 
-        ItemStack followItemStack = SkillMenuFactory.createFollowIcon(isFollowing);
+        ItemStack followItemStack = SkillIconFactory.createFollowIcon(isFollowing);
         GuiItem followGuiItem = new GuiItem(followItemStack, _ -> {
             Event followEvent;
             if (isFollowing) {
@@ -133,7 +132,7 @@ public class SkillMenu implements Menu {
     private Pane getHelpersPane(ChestGui gui) {
         StaticPane helpersPane = new StaticPane(0, MENU_HEIGHT - 1, MENU_WIDTH, 1);
 
-        ItemStack returnItemStack = MenuFactory.createReturnIcon();
+        ItemStack returnItemStack = CommonIconFactory.createReturnIcon();
         GuiItem returnGuiItem = new GuiItem(returnItemStack, _ -> {
             DisplayGeneralMenuEvent returnEvent = new DisplayGeneralMenuEvent(player);
             Bukkit.getPluginManager().callEvent(returnEvent);
