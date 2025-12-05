@@ -17,8 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class CommonIconFactory {
-    public static ItemStack createVillagesListIcon() {
-        String title = "Villages";
+    public static ItemStack createWaypointListIcon() {
+        String title = "Waypoints";
         Material material = Material.BELL;
 
         return IconBuilder
@@ -37,6 +37,24 @@ public class CommonIconFactory {
         return IconBuilder
                 .of(title, NamedTextColor.RED, material)
                 .lore(loreComponent)
+                .build();
+    }
+
+    public static ItemStack createNextPageIcon() {
+        String title = "Next page";
+        Material material = Material.FILLED_MAP;
+
+        return IconBuilder
+                .of(title, NamedTextColor.DARK_GREEN, material)
+                .build();
+    }
+
+    public static ItemStack createPrevPageIcon() {
+        String title = "Previous page";
+        Material material = Material.MAP;
+
+        return IconBuilder
+                .of(title, NamedTextColor.DARK_RED, material)
                 .build();
     }
 

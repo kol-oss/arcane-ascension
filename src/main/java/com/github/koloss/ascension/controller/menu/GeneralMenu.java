@@ -2,6 +2,7 @@ package com.github.koloss.ascension.controller.menu;
 
 import com.github.koloss.ascension.controller.event.BaseEvent;
 import com.github.koloss.ascension.controller.event.DisplayProgressMenuEvent;
+import com.github.koloss.ascension.controller.event.DisplayWaypointsMenuEvent;
 import com.github.koloss.ascension.controller.menu.icons.CommonIconFactory;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
@@ -22,7 +23,7 @@ public class GeneralMenu implements Menu {
     private static final String MENU_NAME = "Tome of Ascension";
 
     private static final int MENU_WIDTH = 9;
-    private static final int MENU_HEIGHT = 4;
+    private static final int MENU_HEIGHT = 5;
 
     private SkillService skillService;
 
@@ -54,9 +55,14 @@ public class GeneralMenu implements Menu {
 
     private Pane getBottomPane() {
         StaticPane bottomPane = new StaticPane(0, 3, MENU_WIDTH, 1);
-        ItemStack villagesIcon = CommonIconFactory.createVillagesListIcon();
+        ItemStack waypointsIcon = CommonIconFactory.createWaypointListIcon();
 
-        bottomPane.addItem(new GuiItem(villagesIcon), MENU_WIDTH / 2, 0);
+        bottomPane.addItem(new GuiItem(waypointsIcon, event -> {
+            Player player = (Player) event.getWhoClicked();
+            BaseEvent displayEvent = new DisplayWaypointsMenuEvent(player);
+
+            Bukkit.getPluginManager().callEvent(displayEvent);
+        }), MENU_WIDTH / 2, 0);
         return bottomPane;
     }
 
@@ -65,7 +71,7 @@ public class GeneralMenu implements Menu {
         // Progress in Skills
         Pane centerPane = getCenterPane();
 
-        // Villages
+        // Waypoints
         Pane bottomPane = getBottomPane();
 
         return List.of(centerPane, bottomPane);

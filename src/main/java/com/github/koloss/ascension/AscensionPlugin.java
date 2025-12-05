@@ -2,27 +2,30 @@ package com.github.koloss.ascension;
 
 import com.github.koloss.ascension.config.ConfigurationFactory;
 import com.github.koloss.ascension.config.DatabaseConfiguration;
-import com.github.koloss.ascension.controller.GeneralListener;
-import com.github.koloss.ascension.controller.ItemListener;
-import com.github.koloss.ascension.controller.ProgressListener;
-import com.github.koloss.ascension.controller.SkillListener;
+import com.github.koloss.ascension.controller.*;
 import com.github.koloss.ascension.controller.command.HelpCommand;
 import com.github.koloss.ascension.controller.command.SkillCommand;
 import com.github.koloss.ascension.controller.command.SkillsCommand;
+import com.github.koloss.ascension.controller.items.ItemManager;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
 import com.github.koloss.ascension.controller.modifier.manager.ModifierManager;
 import com.github.koloss.ascension.controller.particle.ParticleManager;
 import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.database.impl.DatabaseManagerImpl;
-import com.github.koloss.ascension.controller.items.ItemManager;
 import com.github.koloss.ascension.mapper.ModelMapper;
 import com.github.koloss.ascension.mapper.impl.SkillMapperImpl;
+import com.github.koloss.ascension.mapper.impl.WaypointMapperImpl;
 import com.github.koloss.ascension.model.Skill;
+import com.github.koloss.ascension.model.Waypoint;
 import com.github.koloss.ascension.repository.SkillRepository;
+import com.github.koloss.ascension.repository.WaypointRepository;
 import com.github.koloss.ascension.repository.impl.SkillRepositoryImpl;
+import com.github.koloss.ascension.repository.impl.WaypointRepositoryImpl;
 import com.github.koloss.ascension.service.SkillService;
+import com.github.koloss.ascension.service.WaypointService;
 import com.github.koloss.ascension.service.impl.SkillServiceImpl;
+import com.github.koloss.ascension.service.impl.WaypointServiceImpl;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
@@ -54,6 +57,10 @@ public final class AscensionPlugin extends JavaPlugin {
         // Skill listener
         Listener skillListener = createSkillListener();
         manager.registerEvents(skillListener, this);
+
+        // Waypoint listener
+        Listener waypointListener = createWaypointListener();
+        manager.registerEvents(waypointListener, this);
 
         // Progress listener
         Listener progressListener = new ProgressListener(skillService);
@@ -91,6 +98,15 @@ public final class AscensionPlugin extends JavaPlugin {
 
         ModifierManager modifierManager = ModifierManager.of(skillService);
         return new SkillListener(skillService, menuManager, sidebarManager, modifierManager, particleManager);
+    }
+
+    private Listener createWaypointListener() {
+        ModelMapper<Waypoint> waypointMapper = new WaypointMapperImpl();
+
+        WaypointRepository waypointRepository = new WaypointRepositoryImpl(databaseManager, waypointMapper);
+        WaypointService waypointService = new WaypointServiceImpl(waypointRepository, this);
+
+        return new WaypointListener(waypointService, skillService, menuManager);
     }
 
     private Listener createItemListener() {

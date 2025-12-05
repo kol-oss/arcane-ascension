@@ -4,7 +4,7 @@ _17 November 2025_
 
 ## Plugin Overview
 
-**Arcane Ascension** is a Minecraft Paper plugin that expands vanilla gameplay with a deep magic system, progression through divine sorcery branches, and village management mechanics. Players begin as novice practitioners and can evolve into powerful archmages capable of creating settlements and commanding followers through mystical arts.
+**Arcane Ascension** is a Minecraft Paper plugin that expands vanilla gameplay with a deep magic system, progression through divine sorcery branches, and waypoint management mechanics. Players begin as novice practitioners and can evolve into powerful archmages capable of creating settlements and commanding followers through mystical arts.
 
 ## Plugin Information
 
@@ -13,8 +13,8 @@ _17 November 2025_
 | **Platform**          | [Minecraft Paper 1.21.10](https://jd.papermc.io/paper/1.21.10/)                    |
 | **Genre**             | RPG / Magic / Progression                                                          |
 | **Target Audience**   | Minecraft players seeking enhanced RPG elements                                    |
-| **Core Features**     | Branch-based magic system, spell progression, village creation, follower mechanics |
-| **Reference Systems** | Magic plugins, RPG progression systems, custom village mechanics                   |
+| **Core Features**     | Branch-based magic system, spell progression, waypoint creation, follower mechanics |
+| **Reference Systems** | Magic plugins, RPG progression systems, custom waypoint mechanics                   |
 
 ## Gameplay Overview
 
@@ -42,7 +42,7 @@ _17 November 2025_
 | **5** | Craft star vessels to prepare spells for casting                          |
 | **6** | Use spells to enhance abilities, manipulate world, and manage settlements |
 | **7** | Convert villagers to followers for exclusive spell trading                |
-| **8** | Create and name magical villages as centers of power                      |
+| **8** | Create and name magical waypoints as centers of power                      |
 
 ## Core Systems
 
@@ -70,13 +70,13 @@ _17 November 2025_
 
 ### Village Creation & Management
 
-* **Settlement Conjuration:** High-level spell that creates player-named villages
+* **Settlement Conjuration:** High-level spell that creates player-named waypoints
 
-* **Tiered Creation:** Spell level determines village size and defenses (villagers, iron golems)
+* **Tiered Creation:** Spell level determines waypoint size and defenses (villagers, iron golems)
 
 * **Village Registry:** Track all created settlements with names and coordinates
 
-* **Settlement Limits:** Maximum of 13 player-created villages
+* **Settlement Limits:** Maximum of 13 player-created waypoints
 
 ### Follower System
 
@@ -160,7 +160,7 @@ _17 November 2025_
 ### Late Game (Levels 21+)
 
 * Master-level spells and world-altering abilities
-* Multiple established villages
+* Multiple established waypoints
 * Complex spell combinations
 * Maximum branch specialization
 
@@ -180,7 +180,7 @@ _17 November 2025_
 
 * **Additional Branches:** New sorcery paths with unique mechanics
 * **Ritual Magic:** Multi-player spells requiring coordination
-* **Inter-settlement Mechanics:** Trade and conflict between player villages
+* **Inter-settlement Mechanics:** Trade and conflict between player waypoints
 * **Seasonal Events:** Limited-time spells and progression opportunities
 
 ## Development Considerations
