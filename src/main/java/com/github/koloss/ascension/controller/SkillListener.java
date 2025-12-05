@@ -12,6 +12,7 @@ import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
+import com.github.koloss.ascension.utils.converter.NumberConverter;
 import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -69,8 +70,11 @@ public class SkillListener implements Listener {
     public void onNewLevelAvailable(NewLevelAvailableEvent event) {
         Player player = event.getPlayer();
         SkillType type = event.getSkillType();
+        int level = event.getLevel();
 
-        player.sendMessage(Component.text("New level unlocked in " + SkillTypeConverter.toString(type) + " Skill", NamedTextColor.GRAY));
+        String roman = NumberConverter.toRoman(level);
+        NamedTextColor color = SkillTypeConverter.toTextColor(type);
+        player.sendActionBar(Component.text("Level " + roman + " " + SkillTypeConverter.toString(type) + " unlocked", color));
     }
 
     @EventHandler
