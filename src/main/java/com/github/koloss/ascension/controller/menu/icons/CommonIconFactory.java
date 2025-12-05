@@ -1,4 +1,4 @@
-package com.github.koloss.ascension.controller.icons;
+package com.github.koloss.ascension.controller.menu.icons;
 
 import com.github.koloss.ascension.constant.LevelConstants;
 import com.github.koloss.ascension.controller.modifier.ModifierFactory;
@@ -10,27 +10,33 @@ import com.github.koloss.ascension.utils.converter.NumberConverter;
 import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class GeneralMenuFactory {
-    public static ItemStack createSpellsListIcon() {
-        String title = "Spells";
-        Material material = Material.ENCHANTED_BOOK;
-
-        return IconBuilder
-                .of(title, NamedTextColor.YELLOW, material)
-                .build();
-    }
-
+public class CommonIconFactory {
     public static ItemStack createVillagesListIcon() {
         String title = "Villages";
         Material material = Material.BELL;
 
         return IconBuilder
                 .of(title, NamedTextColor.AQUA, material)
+                .build();
+    }
+
+    public static ItemStack createReturnIcon() {
+        String title = "Return";
+        Material material = Material.BARRIER;
+
+        Component loreComponent = Component
+                .text("Return to main menu", NamedTextColor.GRAY)
+                .decorate(TextDecoration.ITALIC);
+
+        return IconBuilder
+                .of(title, NamedTextColor.RED, material)
+                .lore(loreComponent)
                 .build();
     }
 
@@ -61,7 +67,7 @@ public class GeneralMenuFactory {
 
             List<SkillModifier> modifiers = ModifierFactory.getModifiers(type);
             for (SkillModifier modifier : modifiers) {
-                Component modifierContent = MessageUtils.getModifierContent(modifier, skill.getLevel());
+                Component modifierContent = MessageUtils.getModifierContent(modifier, nextLevel);
                 if (modifierContent == null)
                     continue;
 

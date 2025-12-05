@@ -32,7 +32,7 @@ public class ModifierManager {
         return manager;
     }
 
-    private void applyAttribute(Player player, Attribute attribute, double scale) {
+    private void clearAttribute(Player player, Attribute attribute) {
         String keyValue = attribute.key().value();
         NamespacedKey key = new NamespacedKey(KeyConstants.NAMESPACE, keyValue);
 
@@ -43,6 +43,15 @@ public class ModifierManager {
         AttributeModifier existingModifier = attributeInstance.getModifier(key);
         if (existingModifier != null)
             attributeInstance.removeModifier(existingModifier);
+    }
+
+    private void applyAttribute(Player player, Attribute attribute, double scale) {
+        String keyValue = attribute.key().value();
+        NamespacedKey key = new NamespacedKey(KeyConstants.NAMESPACE, keyValue);
+
+        AttributeInstance attributeInstance = player.getAttribute(attribute);
+        if (attributeInstance == null)
+            return;
 
         AttributeModifier.Operation operation = AttributeModifier.Operation.ADD_SCALAR;
         AttributeModifier modifier = new AttributeModifier(key, scale, operation);
@@ -59,8 +68,9 @@ public class ModifierManager {
             Set<Attribute> attributes = scales.keySet();
 
             for (Attribute attribute : attributes) {
-                Double value = scales.get(attribute);
+                clearAttribute(player, attribute);
 
+                Double value = scales.get(attribute);
                 if (value == null || value == 0L)
                     continue;
 
