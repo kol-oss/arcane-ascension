@@ -58,9 +58,9 @@ public class WaypointServiceImpl extends BaseService implements WaypointService 
                 .id(UUID.randomUUID())
                 .userId(userId)
                 .name(name)
-                .x(location.x())
-                .y(location.y())
-                .z(location.z())
+                .x(location.getBlockX())
+                .y(location.getBlockY())
+                .z(location.getBlockZ())
                 .teleportAt(Long.MIN_VALUE)
                 .build();
 

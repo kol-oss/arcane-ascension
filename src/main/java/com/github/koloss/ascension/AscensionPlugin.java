@@ -106,7 +106,7 @@ public final class AscensionPlugin extends JavaPlugin {
         WaypointRepository waypointRepository = new WaypointRepositoryImpl(databaseManager, waypointMapper);
         WaypointService waypointService = new WaypointServiceImpl(waypointRepository, this);
 
-        return new WaypointListener(waypointService, skillService, menuManager);
+        return new WaypointListener(waypointService, skillService, this, menuManager, particleManager);
     }
 
     private Listener createItemListener() {
