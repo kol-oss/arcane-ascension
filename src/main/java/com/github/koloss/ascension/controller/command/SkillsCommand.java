@@ -29,7 +29,7 @@ public class SkillsCommand implements CommandExecutor {
 
         for (SkillType type : types) {
             Skill skill = skillService.findByUserIdAndType(userId, type);
-            Component component = MessageUtils.getSkillContent(skill);
+            Component component = MessageUtils.getSkillContent(type.name(), skill);
 
             player.sendMessage(component.appendNewline());
         }

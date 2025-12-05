@@ -1,10 +1,13 @@
 package com.github.koloss.ascension.controller;
 
+import com.github.koloss.ascension.controller.event.NewLevelAvailableEvent;
 import com.github.koloss.ascension.controller.progress.manager.ProgressManager;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
+import com.github.koloss.ascension.utils.LevelUtils;
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -33,8 +36,16 @@ public class ProgressListener implements Listener {
             }
 
             Skill skill = skillService.findByUserIdAndType(userId, skillType);
+            int beforeLevel = LevelUtils.getLevelFromProgress(skill.getProgress());
+
             skill.getProgressCount().addAndGet(value);
+            int afterLevel = LevelUtils.getLevelFromProgress(skill.getProgress());
+
             skillService.update(skill);
+
+            if (beforeLevel != afterLevel) {
+                Bukkit.getPluginManager().callEvent(new NewLevelAvailableEvent(player, skillType, afterLevel));
+            }
         }
     }
 

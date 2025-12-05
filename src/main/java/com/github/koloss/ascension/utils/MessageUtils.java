@@ -113,11 +113,10 @@ public final class MessageUtils {
                 .clickEvent(ClickEvent.callback(callback, callbackOptions));
     }
 
-    public static Component getSkillContent(Skill skill) {
+    public static Component getSkillContent(String name, Skill skill) {
         SkillType skillType = skill.getType();
         long progress = skill.getProgress();
 
-        String name = skillType.name();
         NamedTextColor nameColor = SkillTypeConverter.toTextColor(skillType);
 
         // Delimiters
