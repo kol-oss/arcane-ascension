@@ -15,7 +15,7 @@ import com.github.koloss.ascension.controller.particle.ParticleManager;
 import com.github.koloss.ascension.controller.sidebar.manager.SidebarManager;
 import com.github.koloss.ascension.database.DatabaseManager;
 import com.github.koloss.ascension.database.impl.DatabaseManagerImpl;
-import com.github.koloss.ascension.items.ItemManager;
+import com.github.koloss.ascension.controller.items.ItemManager;
 import com.github.koloss.ascension.mapper.ModelMapper;
 import com.github.koloss.ascension.mapper.impl.SkillMapperImpl;
 import com.github.koloss.ascension.model.Skill;
