@@ -1,9 +1,6 @@
 package com.github.koloss.ascension.controller;
 
-import com.github.koloss.ascension.controller.event.CloseProgressSidebarEvent;
-import com.github.koloss.ascension.controller.event.DisplayProgressMenuEvent;
-import com.github.koloss.ascension.controller.event.DisplayProgressSidebarEvent;
-import com.github.koloss.ascension.controller.event.IncrementLevelEvent;
+import com.github.koloss.ascension.controller.event.*;
 import com.github.koloss.ascension.controller.menu.Menu;
 import com.github.koloss.ascension.controller.menu.SkillMenu;
 import com.github.koloss.ascension.controller.menu.manager.MenuManager;
@@ -17,6 +14,8 @@ import com.github.koloss.ascension.model.SkillType;
 import com.github.koloss.ascension.service.SkillService;
 import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -64,6 +63,14 @@ public class SkillListener implements Listener {
         for (SkillType type : skillTypes) {
             modifierManager.apply(player, type);
         }
+    }
+
+    @EventHandler
+    public void onNewLevelAvailable(NewLevelAvailableEvent event) {
+        Player player = event.getPlayer();
+        SkillType type = event.getSkillType();
+
+        player.sendMessage(Component.text("New level unlocked in " + SkillTypeConverter.toString(type) + " Skill", NamedTextColor.GRAY));
     }
 
     @EventHandler
