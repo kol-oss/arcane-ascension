@@ -43,7 +43,7 @@ public class SkillCommand implements CommandExecutor {
         UUID userId = player.getUniqueId();
 
         Skill skill = skillService.findByUserIdAndType(userId, type);
-        Component component = MessageUtils.getSkillContent(skill);
+        Component component = MessageUtils.getSkillContent(skill.getType().name(), skill);
 
         player.sendMessage(component);
         return true;
