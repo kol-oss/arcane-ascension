@@ -1,6 +1,7 @@
 package com.github.koloss.ascension.controller.menu;
 
 import com.github.koloss.ascension.constant.WaypointConstants;
+import com.github.koloss.ascension.controller.event.CreateWaypointEvent;
 import com.github.koloss.ascension.controller.event.DisplayGeneralMenuEvent;
 import com.github.koloss.ascension.controller.event.WaypointClickEvent;
 import com.github.koloss.ascension.controller.menu.icons.CommonIconFactory;
@@ -15,11 +16,15 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.Pane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,11 +37,45 @@ public class WaypointMenu implements Menu {
 
     private SkillService skillService;
     private WaypointService waypointService;
+
+    private Plugin plugin;
     private Player player;
 
     @Override
     public ChestGui create() {
         return new ChestGui(MENU_HEIGHT, MENU_NAME);
+    }
+
+    private boolean validateWaypointName(String input) {
+        if (input.isEmpty()) {
+            player.sendMessage(Component.text("Waypoint name cannot be empty"));
+            return false;
+        }
+
+        return true;
+    }
+
+    private void openWaypointCreationMenu(ItemStack item) {
+        new AnvilGUI.Builder()
+                .title("Waypoint creation")
+                .itemLeft(item)
+                .onClick((slot, stateSnapshot) -> {
+                    if (slot != AnvilGUI.Slot.OUTPUT) {
+                        return Collections.emptyList();
+                    }
+
+                    String name = stateSnapshot.getText();
+                    boolean isValid = validateWaypointName(name);
+
+                    if (isValid) {
+                        CreateWaypointEvent event = new CreateWaypointEvent(player, name);
+                        Bukkit.getPluginManager().callEvent(event);
+                    }
+
+                    return List.of(AnvilGUI.ResponseAction.close());
+                })
+                .plugin(plugin)
+                .open(player);
     }
 
     private PaginatedPane getWaypointsListPane() {
@@ -53,6 +92,7 @@ public class WaypointMenu implements Menu {
 
         List<GuiItem> items = new ArrayList<>();
         for (int i = 0; i < maxWaypoints; i++) {
+            int index = i + 1;
             GuiItem item;
 
             if (i < waypoints.size()) {
@@ -65,16 +105,12 @@ public class WaypointMenu implements Menu {
                     WaypointClickEvent event = new WaypointClickEvent(player, waypoint);
                     Bukkit.getPluginManager().callEvent(event);
                 });
+            } else if (totalLevel >= index * WaypointConstants.LEVEL_FOR_WAYPOINT) {
+                ItemStack itemStack = WaypointIconFactory.createOpenWaypoint(index, totalLevel);
+
+                item = new GuiItem(itemStack, _ -> openWaypointCreationMenu(itemStack));
             } else {
-                ItemStack itemStack;
-                int index = i + 1;
-
-                if (totalLevel >= index * WaypointConstants.LEVEL_FOR_WAYPOINT) {
-                    itemStack = WaypointIconFactory.createOpenWaypoint(index, totalLevel);
-                } else {
-                    itemStack = WaypointIconFactory.createLockedWaypoint(index, totalLevel);
-                }
-
+                ItemStack itemStack = WaypointIconFactory.createLockedWaypoint(index, totalLevel);
                 item = new GuiItem(itemStack);
             }
 

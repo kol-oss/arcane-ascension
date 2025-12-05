@@ -25,9 +25,9 @@ public class ParticleManager {
         return manager;
     }
 
-    public void displayRing(Player player, NamedTextColor color) {
+    public void displayRing(Player player, double radius, NamedTextColor color) {
         ParticleData particleData = ParticleData.builder()
-                .radius(1.2)
+                .radius(radius)
                 .startHeight(2)
                 .endHeight(0.2)
                 .speed(0.1)

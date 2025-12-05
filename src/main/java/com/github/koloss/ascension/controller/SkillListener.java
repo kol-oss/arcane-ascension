@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -42,6 +43,10 @@ public class SkillListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         UUID userId = player.getUniqueId();
+
+        for (TextDisplay text : player.getWorld().getEntitiesByClass(TextDisplay.class)) {
+            text.remove();
+        }
 
         SkillType[] skillTypes = SkillType.values();
 
@@ -88,7 +93,7 @@ public class SkillListener implements Listener {
         skillService.update(skill);
 
         modifierManager.apply(player, type);
-        particleManager.displayRing(player, SkillTypeConverter.toTextColor(type));
+        particleManager.displayRing(player, 1.2, SkillTypeConverter.toTextColor(type));
     }
 
     @EventHandler

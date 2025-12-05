@@ -1,195 +1,142 @@
 # Arcane Ascension
 
-_17 November 2025_
+_6 December 2025_
 
 ## Plugin Overview
 
-**Arcane Ascension** is a Minecraft Paper plugin that expands vanilla gameplay with a deep magic system, progression through divine sorcery branches, and waypoint management mechanics. Players begin as novice practitioners and can evolve into powerful archmages capable of creating settlements and commanding followers through mystical arts.
+**Arcane Ascension** is a Minecraft Paper plugin that expands vanilla gameplay with a simple attribute-based progression system. Players progress through distinct skill branches to gain permanent buffs and unlock the ability to create personal waypoints.
 
 ## Plugin Information
 
 | Field                 | Details                                                                            |
 |-----------------------|------------------------------------------------------------------------------------|
 | **Platform**          | [Minecraft Paper 1.21.10](https://jd.papermc.io/paper/1.21.10/)                    |
-| **Genre**             | RPG / Magic / Progression                                                          |
-| **Target Audience**   | Minecraft players seeking enhanced RPG elements                                    |
-| **Core Features**     | Branch-based magic system, spell progression, waypoint creation, follower mechanics |
-| **Reference Systems** | Magic plugins, RPG progression systems, custom waypoint mechanics                   |
+| **Genre**             | RPG / Progression                                                                  |
+| **Target Audience**   | Minecraft players seeking attribute enhancements and waypoint management           |
+| **Core Features**     | Skill-based progression, attribute buffs, waypoint creation and management         |
+| **Reference Systems** | RPG leveling systems, attribute modifiers, custom waypoint mechanics               |
 
 ## Gameplay Overview
 
 ### Objectives
 
-* Progress through three divine sorcery branches to unlock powerful abilities
-* Learn and master spells of increasing complexity and power
-* Establish and manage mystical settlements
-* Convert villagers to cult followers for exclusive trading
-* Manage mana resources and spell vessels effectively
-* Complete the arcane progression to become a master sorcerer
-
-### Story
-
-> The player discovers ancient texts of the Trinitarian Divine Path - three branches of sorcery that have been lost to time. Through dedication to these mystical arts, players can reshape the world around them, creating settlements bound by magic and commanding loyal followers.
+* Progress through three skill branches to unlock permanent attribute buffs
+* Reach the maximum level in each skill to gain their full benefits
+* Create and manage personal waypoints for easy travel
+* Efficiently track progression across all skills
 
 ## Gameplay Flow
 
 | Step  | Action                                                                    |
 |-------|---------------------------------------------------------------------------|
-| **1** | Obtain the Tome of Ascension through command                              |
-| **2** | Perform branch-related activities to gain experience                      |
-| **3** | Level up sorcery branches and general arcane level                        |
-| **4** | Unlock and learn new spells through progression and trading               |
-| **5** | Craft star vessels to prepare spells for casting                          |
-| **6** | Use spells to enhance abilities, manipulate world, and manage settlements |
-| **7** | Convert villagers to followers for exclusive spell trading                |
-| **8** | Create and name magical waypoints as centers of power                      |
+| **1** | Receive the Tome of Ascension upon joining the server or using `/help`    |
+| **2** | Right-click with the Tome to open the General Menu                        |
+| **3** | Click on a Skill Type (Combat, Mining, Farming) to view its Level Menu    |
+| **4** | Perform relevant in-game activities to gain skill experience and level up |
+| **5** | Unlock attribute buffs automatically as you level up each skill           |
+| **6** | Use the Waypoints Menu to create and manage saved locations               |
 
 ## Core Systems
 
-### Arcane Progression System
+### Skill Progression System
 
-* **Three Divine Branches:** Celestial Might, Eternal Endurance, Ethereal Celerity
+* **Three Skill Types:** Combat, Mining, Farming
+* **Skill Leveling:** Each skill has 23 levels, gained by performing relevant vanilla activities
+* **Attribute Buffs:** Each level provides a permanent buff to a corresponding Minecraft attribute (e.g., +attack damage, +mining speed, +max health)
 
-* **General Arcane Level:** Tracks overall mastery, increases mana pool and regeneration
+### Waypoint System
 
-* **Branch Leveling:** Each branch levels through specific vanilla activities (combat, mining, movement)
+* **Creation:** Players can create waypoints from the General Menu
+* **Management:** A paginated list of all personal waypoints
+* **Limits:** The number of waypoints a player can create is tied to their total skill levels
 
-* **Progression Unlocks:** Higher levels grant access to more powerful spells and abilities
+### Tome of Ascension
 
-### Spell Management
-
-* **Spell Tome:** Central interface replacing inventory with organized spell management
-
-* **Spell Tiers:** Novice, Adept, Master - with increasing power and mana costs
-
-* **Star Vessels:** Craftable items that store prepared spells for activation
-
-* **Spell Activation:** Right-click with vessel to cast, with duration scaling based on branch level
-
-* **Simultaneous Casting:** Up to 3 active spells at once with visual mana display
-
-### Village Creation & Management
-
-* **Settlement Conjuration:** High-level spell that creates player-named waypoints
-
-* **Tiered Creation:** Spell level determines waypoint size and defenses (villagers, iron golems)
-
-* **Village Registry:** Track all created settlements with names and coordinates
-
-* **Settlement Limits:** Maximum of 13 player-created waypoints
-
-### Follower System
-
-* **Conversion Rituals:** Branch-specific spells to convert villagers to followers
-
-* **Tiered Followers:** Novice, Adept, Master followers with different trade offerings
-
-* **Specialized Trading:** Followers sell spells focused on their branch with cross-branch options at higher tiers
-
-* **Permanent Allegiance:** Master-level followers cannot be converted to other branches
+* **Central Interface:** Right-clicking the Tome opens the General Menu
+* **Menu Navigation:** Access point for Skill Level Menus and the Waypoints Menu
+* **Automatic Distribution:** Given to players on join and via the `/help` command
 
 ## Technical Implementation
 
 ### User Interface
 
-* **Tome of Ascension:** Custom inventory interface as central hub
-
-* **Branch Menus:** Separate chest-based menus for each progression path
-
-* **Spell Selection:** Grid-based spell management with branch color coding
-
-* **Village Registry:** Interactive list of created settlements with teleport functionality
+* **General Menu:** The main hub opened by the Tome, containing buttons for Skills and Waypoints
+* **Skill Level Menu:** A separate menu for each skill type (Combat, Mining, Farming) showing progression and unlocked buffs
+* **Waypoints Menu:** A paginated menu to view, create, and manage personal waypoints
 
 ### Progression Tracking
 
-* **Vanilla Stat Integration:** Leverages existing Minecraft statistics for branch progression
+* **Vanilla Activity Integration:** Tracks existing Minecraft activities (e.g., damage dealt, blocks mined, crops harvested) for skill progression
+* **Attribute Modification:** Applies permanent attribute modifiers via the Bukkit API as players level up
 
-* **Custom Experience:** Implements arcane level system alongside branch progression
+### Command System
 
-* **Achievement Unlocks:** Milestone rewards at key general level thresholds
-
-### Spell Mechanics
-
-* **Effect System:** Custom potion effects, particle systems, and world manipulation
-
-* **Mana Management:** Boss bar display when holding active star vessels
-
-* **Cooldown Systems:** Balanced spell usage with tier-appropriate restrictions
-
-* **Duration Scaling:** Spell effectiveness increases with relevant branch mastery
+* **/skill [combat/mining/farming]:** Displays the player's current level and progress in the specified skill.
+* **/skills:** Displays the player's current level in all three skills.
 
 ## Design Style
 
 | Category              | Description                                                                                      |
 |-----------------------|--------------------------------------------------------------------------------------------------|
-| **Art Style**         | Vanilla-friendly mystical enhancements that complement Minecraft's existing aesthetic            |
-| **Visual Philosophy** | Subtle magical effects that feel like natural extensions of vanilla mechanics                    |
-| **User Interface**    | Re-skinned chest interfaces with removed unused slots, maintaining vanilla container familiarity |
-| **Iconography**       | Custom resource pack providing distinct but cohesive spell and vessel icons                      |
-| **Death Effects**     | Three floating light orbs that gently drift at death location for limited duration               |
-| **Color Coding**      | Distinct branch colors that harmonize with Minecraft's color palette                             |
-| **Animation Style**   | Particle-based effects using vanilla's existing effect systems (lightning, fire, smoke)          |
+| **Art Style**         | Vanilla-friendly interface that complements Minecraft's existing aesthetic                       |
+| **Visual Philosophy** | Clean menus that feel like natural extensions of vanilla mechanics                               |
+| **User Interface**    | Re-skinned chest interfaces maintaining vanilla container familiarity                            |
+| **Iconography**       | Uses vanilla or simple custom textures for clear menu navigation                                 |
 
 ## Design Guidelines
 
-| Element               | Notes                                                                                |
-|-----------------------|--------------------------------------------------------------------------------------|
-| **Spell Casting**     | Vanilla particle systems combined for unique signatures                              |
-| **Elemental Spells**  | Lightning for storm magic, flame particles for fire, water droplets for water spells |
-| **Buff Effects**      | Subtle particle trails matching branch colors during active spell duration           |
-| **Mana Display**      | Boss bar with custom color and text, positioned naturally in interface space         |
-| **Death Orbs**        | Three GLOW effect entities with gentle floating animation over 30 seconds            |
-| **Vessel Activation** | Brief particle burst when spell is activated from star vessel                        |
+| Element                 | Notes                                                                            |
+|-------------------------|----------------------------------------------------------------------------------|
+| **Menu Design**         | Intuitive chest-based menus with clear navigation paths                          |
+| **Progression Display** | Clean presentation of current level, next level requirements, and unlocked buffs |
+| **Waypoint List**       | Paginated, easy-to-read list of saved locations                                  |
 
 ## Progression Arc
 
-### Early Game (Levels 1-10)
+### Early Game (Levels 1-8)
 
-* Basic branch progression through normal gameplay
-* Unlock novice-level utility spells
-* Learn fundamental mana management
-* Access to follower conversion spells
+* Begin gaining levels through basic gameplay
+* Receive initial, small attribute buffs
+* Unlock first few waypoint slots
 
-### Mid Game (Levels 11-20)
+### Mid Game (Levels 9-16)
 
-* Craft first star vessels
-* Establish initial magical settlements
-* Develop specialized branch focus
-* Access to adept-level spells and followers
+* Noticeable enhancement to character capabilities
+* Increased number of available waypoints
+* Significant time savings in travel and tasks
 
-### Late Game (Levels 21+)
+### Late Game (Levels 17-23)
 
-* Master-level spells and world-altering abilities
-* Multiple established waypoints
-* Complex spell combinations
-* Maximum branch specialization
+* Powerful attribute buffs that markedly change gameplay
+* Maximum number of waypoints for flexible travel
+* Character specialization based on highest skill
 
 ## MVP (Minimum Viable Product)
 
-**Goal:** Functional prototype demonstrating core magic system
+**Goal:** Functional prototype demonstrating core progression system
 
 **Must-have Features:**
 
-* Basic tome interface with one functional branch
-* Simple spell learning and vessel system
-* One working spell type with mana management
-* Basic progression tracking
-* Village creation spell (single tier)
+* Tome of Ascension item and General Menu
+* One fully functional skill type (e.g., Combat) with 23 levels and attribute buffs
+* Basic progression tracking for that skill
+* Waypoint creation and management menu
+* `/skill` and `/skills` commands
 
 ## Future Expansion Potential
 
-* **Additional Branches:** New sorcery paths with unique mechanics
-* **Ritual Magic:** Multi-player spells requiring coordination
-* **Inter-settlement Mechanics:** Trade and conflict between player waypoints
-* **Seasonal Events:** Limited-time spells and progression opportunities
+* **Additional Skills:** New skill types like Fishing, Building, or Exploration
+* **Skill Trees:** Choices within a skill branch for specialized buffs
+* **Waypoint Enhancements:** Naming, icons, or sharing waypoints with other players
+* **Global Leaderboards:** Compare skill levels across the server
 
 ## Development Considerations
 
-* **Performance:** Efficient tracking of player progression and active spells
-* **Compatibility:** Works alongside other popular plugins and datapacks
-* **Scalability:** Modular design allowing for easy expansion
-* **User Experience:** Intuitive systems that enhance rather than complicate vanilla gameplay
+* **Performance:** Efficient tracking of player activity and attribute application
+* **Compatibility:** Works alongside other plugins that modify attributes or menus
+* **Scalability:** Modular design allowing for easy addition of new skills or features
+* **User Experience:** Intuitive systems that provide clear value without complicating core gameplay
 
 ## License
 
-Arcane Ascension is licensed under the permissive MIT license. Please see [LICENSE](https://github.com/kol-oss/rise-of-cults/blob/main/LICENSE) for more info.
+Arcane Ascension is licensed under the permissive MIT license. Please see [LICENSE](https://github.com/kol-oss/arcane-ascension/blob/main/LICENSE) for more info.
