@@ -39,7 +39,7 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPlayedBefore()) {
+        if (!player.hasPlayedBefore()) {
             HelpEvent helpEvent = new HelpEvent(player, false);
             Bukkit.getPluginManager().callEvent(helpEvent);
         }

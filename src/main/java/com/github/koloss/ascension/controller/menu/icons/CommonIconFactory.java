@@ -5,6 +5,7 @@ import com.github.koloss.ascension.controller.modifier.ModifierFactory;
 import com.github.koloss.ascension.controller.modifier.SkillModifier;
 import com.github.koloss.ascension.model.Skill;
 import com.github.koloss.ascension.model.SkillType;
+import com.github.koloss.ascension.utils.LevelUtils;
 import com.github.koloss.ascension.utils.MessageUtils;
 import com.github.koloss.ascension.utils.converter.NumberConverter;
 import com.github.koloss.ascension.utils.converter.SkillTypeConverter;
@@ -74,7 +75,8 @@ public class CommonIconFactory {
                 .lore(Component.text(SkillTypeConverter.toDescription(type), NamedTextColor.GRAY));
 
         if (hasNextLevel && progress < (LevelConstants.MAX_LEVEL * LevelConstants.PROGRESS_PER_LEVEL - LevelConstants.PROGRESS_PER_LEVEL)) {
-            int nextLevel = skill.getLevel() + 1;
+            int actualLevel = LevelUtils.getLevelFromProgress(skill.getProgress());
+            int nextLevel = actualLevel + 1;
 
             builder
                     .lore(Component.empty())
