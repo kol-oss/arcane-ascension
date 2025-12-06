@@ -126,7 +126,9 @@ public final class MessageUtils {
         Component resultComponent = openDelimiter;
 
         // Progress
-        int nextLevel = skill.getLevel() + 1;
+        int actualLevel = LevelUtils.getLevelFromProgress(skill.getProgress());
+        int nextLevel = actualLevel + 1;
+
         if (nextLevel <= LevelConstants.MAX_LEVEL) {
             // Progress Bar
             resultComponent = resultComponent
